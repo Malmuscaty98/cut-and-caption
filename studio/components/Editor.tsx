@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
 import { cutWords, mergeCaptionWithNext, splitCaptionAt } from "@/lib/edits";
+import { translate, useLangSync, useT } from "@/lib/i18n";
 import { useStore } from "@/lib/store";
 import type { Preset, Project } from "@/lib/types";
 import { useTimeline } from "./hooks";
@@ -17,6 +18,8 @@ async function fetchProject(name: string) {
 }
 
 export function Editor({ name }: { name: string }) {
+  useLangSync();
+  const t = useT();
   const project = useStore((s) => s.project);
   const dirty = useStore((s) => s.dirty);
   const toast = useStore((s) => s.toast);
@@ -32,7 +35,10 @@ export function Editor({ name }: { name: string }) {
       ]);
       useStore.getState().load(name, project, mtime);
       useStore.setState({ presets });
-    })().catch((e) => useStore.getState().notify(`ما قدرت أفتح المشروع: ${e}`));
+    })().catch((e) => {
+      const s = useStore.getState();
+      s.notify(translate(s.lang, "shell.openFailed", { error: String(e) }));
+    });
   }, [name]);
 
   // Autosave (debounced). On conflict (Claude wrote meanwhile) → take theirs, keep ours undoable.
@@ -76,7 +82,7 @@ export function Editor({ name }: { name: string }) {
       if (msg.type === "hello") {
         const mine = process.env.NEXT_PUBLIC_CUTCAPTION_BUILD;
         if (msg.build && mine && msg.build !== mine) {
-          useStore.getState().notify("تحديث جديد للمحرر — يعيد التحميل…");
+          useStore.getState().notify(translate(useStore.getState().lang, "shell.newVersionReloading"));
           await save();
           window.location.reload();
         }
@@ -141,22 +147,22 @@ export function Editor({ name }: { name: string }) {
           // Split the caption under the playhead at the word being spoken.
           const src = tl.outToSrc(s.frame) / tl.fps;
           const w = p.words.find((x) => src >= x.start && src < x.end) ?? p.words.find((x) => x.start >= src);
-          if (w) s.update("قسم السطر", (d) => void splitCaptionAt(d, w.id));
+          if (w) s.update(translate(s.lang, "shell.splitLine"), (d) => void splitCaptionAt(d, w.id));
           break;
         }
         case "m":
-          if (sel?.kind === "caption") s.update("دمج سطرين", (d) => void mergeCaptionWithNext(d, sel.id));
+          if (sel?.kind === "caption") s.update(translate(s.lang, "shell.mergeLines"), (d) => void mergeCaptionWithNext(d, sel.id));
           break;
         case "e":
           if (sel?.kind === "words")
-            s.update("إبراز", (d) => {
+            s.update(translate(s.lang, "shell.emphasize"), (d) => {
               const on = !d.words.find((w) => w.id === sel.ids[0])?.emphasis;
               d.words.forEach((w) => sel.ids.includes(w.id) && (w.emphasis = on));
             });
           break;
         case "c":
           if (sel?.kind === "words") {
-            s.update("قص الكلمات", (d) => cutWords(d, sel.ids));
+            s.update(translate(s.lang, "shell.cutWords"), (d) => cutWords(d, sel.ids));
             s.select(null);
           }
           break;
@@ -164,9 +170,9 @@ export function Editor({ name }: { name: string }) {
         case "backspace": {
           if (!sel) break;
           e.preventDefault();
-          if (sel.kind === "cut") s.update("تعطيل/تفعيل قصة", (d) => d.cuts.forEach((c) => c.id === sel.id && ((c.enabled = !c.enabled), (c.proposed = false))));
-          if (sel.kind === "zoom") s.update("حذف زوم", (d) => void (d.zooms = d.zooms.filter((z) => z.id !== sel.id)));
-          if (sel.kind === "words") s.update("قص الكلمات", (d) => cutWords(d, sel.ids));
+          if (sel.kind === "cut") s.update(translate(s.lang, "shell.toggleCut"), (d) => d.cuts.forEach((c) => c.id === sel.id && ((c.enabled = !c.enabled), (c.proposed = false))));
+          if (sel.kind === "zoom") s.update(translate(s.lang, "shell.deleteZoom"), (d) => void (d.zooms = d.zooms.filter((z) => z.id !== sel.id)));
+          if (sel.kind === "words") s.update(translate(s.lang, "shell.cutWords"), (d) => cutWords(d, sel.ids));
           if (sel.kind !== "cut") s.select(null);
           break;
         }
@@ -191,7 +197,7 @@ export function Editor({ name }: { name: string }) {
     return () => window.removeEventListener("beforeunload", onUnload);
   }, [save]);
 
-  if (!project) return <div style={{ padding: 40 }}>…جاري التحميل</div>;
+  if (!project) return <div style={{ padding: 40 }}>{t("shell.loading")}</div>;
   return (
     <div className="editor">
       <TopBar />

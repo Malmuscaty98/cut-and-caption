@@ -47,7 +47,8 @@ input[type="range"] { accent-color: var(--accent); }
 .grow { flex: 1; }
 .kbd { font-family: ui-monospace, monospace; font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; color: var(--muted); }
 
-/* Editor layout — RTL page: inspector on the right, transcript on the left, timeline at the bottom. */
+/* Editor layout — Arabic (RTL): inspector on the right, transcript on the left; English (LTR) mirrors it.
+   Logical properties (inline-start / inline-end) so both directions get the right borders. */
 .editor {
   display: grid; height: 100vh;
   grid-template-columns: 330px 1fr 340px;
@@ -55,9 +56,9 @@ input[type="range"] { accent-color: var(--accent); }
   grid-template-areas: "top top top" "inspector preview transcript" "timeline timeline timeline";
 }
 .topbar { grid-area: top; display: flex; align-items: center; gap: 10px; padding: 0 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
-.inspector { grid-area: inspector; background: var(--panel); border-left: 1px solid var(--line); overflow: auto; }
+.inspector { grid-area: inspector; background: var(--panel); border-inline-end: 1px solid var(--line); overflow: auto; }
 .preview { grid-area: preview; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #0d0e10; }
-.transcript { grid-area: transcript; background: var(--panel); border-right: 1px solid var(--line); overflow: auto; }
+.transcript { grid-area: transcript; background: var(--panel); border-inline-start: 1px solid var(--line); overflow: auto; }
 .timeline { grid-area: timeline; background: var(--panel); border-top: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; }
 
 .panel-title { position: sticky; top: 0; z-index: 2; background: var(--panel); padding: 8px 12px; border-bottom: 1px solid var(--line); font-weight: 600; display: flex; align-items: center; gap: 8px; }
@@ -88,10 +89,10 @@ input[type="range"] { accent-color: var(--accent); }
 .cap-row:hover .line-edit-btn { opacity: 1; }
 
 /* Timeline */
-.tl-toolbar { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-bottom: 1px solid var(--line); direction: rtl; }
+.tl-toolbar { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-bottom: 1px solid var(--line); }
 .tl-body { flex: 1; display: flex; min-height: 0; direction: ltr; }
 .tl-heads { width: 92px; flex: none; border-right: 1px solid var(--line); background: var(--panel); }
-.tl-head { height: 30px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; color: var(--muted); border-bottom: 1px solid #2a2d32; direction: rtl; justify-content: flex-end; }
+.tl-head { height: 30px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; color: var(--muted); border-bottom: 1px solid #2a2d32; justify-content: flex-end; unicode-bidi: plaintext; }
 .tl-head.ruler { height: 22px; }
 .tl-head.wave { height: 46px; }
 .tl-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; position: relative; }
@@ -100,7 +101,7 @@ input[type="range"] { accent-color: var(--accent); }
 .tl-tick { position: absolute; top: 0; height: 100%; border-left: 1px solid #3a3d44; font-size: 10px; color: var(--muted); padding-left: 3px; }
 .tl-wave { height: 46px; position: relative; border-bottom: 1px solid #2a2d32; }
 .tl-track { height: 30px; position: relative; border-bottom: 1px solid #2a2d32; }
-.tl-item { position: absolute; top: 3px; height: 24px; border-radius: 4px; font-size: 11px; overflow: hidden; white-space: nowrap; padding: 0 5px; line-height: 24px; cursor: grab; user-select: none; direction: rtl; color: #fff; }
+.tl-item { position: absolute; top: 3px; height: 24px; border-radius: 4px; font-size: 11px; overflow: hidden; white-space: nowrap; padding: 0 5px; line-height: 24px; cursor: grab; user-select: none; unicode-bidi: plaintext; color: #fff; }
 .tl-item.sel { outline: 2px solid #fff; z-index: 2; }
 .tl-item.off { opacity: 0.35; background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,0.35) 4px 8px); }
 .tl-item.proposed { border: 1px dashed #fff; }

@@ -15,7 +15,7 @@
 | **قص السكتات** | يقص السكوت الصوتي فقط ولا يقص أي حرف — إعداد «مشدود» أو «طبيعي»، وتعدّل كل قصة بالسحب |
 | **كابشن دقيق** | تفريغ Whisper بتوقيت كل كلمة + مراجعة Claude (إملاء، مصطلحاتك، الحشو، تقسيم الأسطر). كل لغات Whisper، والعربي بكل اللهجات يُعرض صح |
 | **زوم** | زوم مباشر يتبدّل عند القصات، وزوم ناعم على الكلمات المهمة — وتعدّله على مسار الزوم |
-| **المحرر** | معاينة، نص قابل للتعديل، Timeline (قصات · كابشن · زوم)، خط وألوان ومكان وحركة الكابشن، تراجع/إعادة |
+| **المحرر** | معاينة، نص قابل للتعديل، Timeline (قصات · كابشن · زوم)، خط وألوان ومكان وحركة الكابشن، تراجع/إعادة — الواجهة بالعربي أو الإنجليزي |
 | **التصدير** | MP4 بجودة عالية (H.264 · BT.709) + ملف SRT، بمقاسات 9:16 · 4:5 · 1:1 · 16:9 |
 
 **الخصوصية:** الفيديو والصوت ما يطلعون من جهازك أبداً. النص المفرّغ فقط يمر على Claude لأنه هو اللي يراجعه — مثل أي محادثة في Claude Code.
@@ -63,7 +63,8 @@
   line breaks). Any language Whisper knows; Arabic (every dialect) renders correctly.
 - **Zooms** — hard punch-ins alternating at the cuts, smooth pushes on key words; edit them on the zoom track.
 - **Editor** — preview, editable transcript, timeline (cuts · captions · zooms), caption font /
-  colours / position / animation, auto contrast on light backgrounds, undo / redo.
+  colours / position / animation, auto contrast on light backgrounds, undo / redo. Arabic or English UI
+  (one click in the top bar).
 - **Export** — H.264 / BT.709 MP4 + SRT, 9:16 · 4:5 · 1:1 · 16:9.
 
 Your video and audio never leave your computer; only the transcript text is shared with Claude

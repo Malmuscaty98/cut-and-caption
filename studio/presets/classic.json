@@ -1,7 +1,9 @@
 {
   "id": "classic",
   "name": "Classic — white + soft shadow",
+  "nameAr": "كلاسيك — أبيض بظل ناعم",
   "description": "The whole phrase at once, bold white with a soft shadow, on the chest. Auto contrast: dark text on light backgrounds.",
+  "descriptionAr": "الجملة كاملة مرة وحدة، أبيض عريض بظل ناعم على الصدر. لون تلقائي: نص داكن على الخلفيات الفاتحة.",
   "style": {
     "fontFamily": "IBM Plex Sans Arabic",
     "fontWeight": 700,

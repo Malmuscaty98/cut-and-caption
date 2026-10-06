@@ -88,7 +88,10 @@ export interface Shot {
 
 export interface Preset {
   id: string;
-  name: string;
+  name: string; // English
+  nameAr?: string;
+  description?: string;
+  descriptionAr?: string;
   style: CaptionStyle;
   zoom?: { cutZoomScale: number; x: number; y: number };
 }

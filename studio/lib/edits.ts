@@ -1,5 +1,6 @@
 // Pure edit operations on a Project (mutating the draft passed by store.update).
-import { newId } from "./store";
+import { translate } from "./i18n";
+import { newId, useStore } from "./store";
 import type { Caption, Project } from "./types";
 
 const snap = (t: number, fps: number, dir: "floor" | "ceil" | "round" = "round") => Math[dir](t * fps + (dir === "floor" ? 1e-6 : dir === "ceil" ? -1e-6 : 0)) / fps;
@@ -57,7 +58,8 @@ export function cutWords(p: Project, wordIds: string[]) {
   const fps = p.output.fps;
   const start = snap(Math.min(...ws.map((w) => w.start)), fps, "floor");
   const end = snap(Math.max(...ws.map((w) => w.end)), fps, "ceil");
-  p.cuts.push({ id: newId("k", p.cuts), start, end, reason: "manual", enabled: true, proposed: false, note: `قص يدوي: «${ws.map((w) => w.text).join(" ")}»` });
+  const note = translate(useStore.getState().lang, "shell.manualCutNote", { words: ws.map((w) => w.text).join(" ") });
+  p.cuts.push({ id: newId("k", p.cuts), start, end, reason: "manual", enabled: true, proposed: false, note });
   p.cuts.sort((a, b) => a.start - b.start);
 }
 

@@ -2,6 +2,7 @@
 import { Player, type PlayerRef } from "@remotion/player";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CaptionedVideo } from "@/remotion/CaptionedVideo";
+import { useT } from "@/lib/i18n";
 import { activeCaption } from "@/lib/timeline";
 import { fmtTime, useStore } from "@/lib/store";
 import type { CaptionedVideoProps } from "@/lib/types";
@@ -30,6 +31,7 @@ export const player = {
 };
 
 export function PlayerPanel() {
+  const t = useT();
   const project = useStore((s) => s.project)!;
   const name = useStore((s) => s.name);
   const view = useStore((s) => s.view);
@@ -120,7 +122,7 @@ export function PlayerPanel() {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
       // one undo step for the whole drag
-      useStore.setState((s) => ({ past: [...s.past, before], future: [], dirty: true, lastLabel: "تحريك الكابشن" }));
+      useStore.setState((s) => ({ past: [...s.past, before], future: [], dirty: true, lastLabel: t("shell.moveCaption") }));
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -129,7 +131,7 @@ export function PlayerPanel() {
   return (
     <div className="preview">
       <div ref={boxRef} style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
-        {/* dir=ltr: the page is RTL, which shifts the Player's scaled layer out of its box. Captions set their own dir. */}
+        {/* dir=ltr: an RTL page (Arabic UI) shifts the Player's scaled layer out of its box. Captions set their own dir. */}
         <div dir="ltr" style={{ position: "relative", width: size.w, height: size.h, boxShadow: "0 0 0 1px #2b2e33" }}>
           <Player
             ref={playerRef}
@@ -149,7 +151,7 @@ export function PlayerPanel() {
           />
           {/* caption position handle */}
           <div
-            title="اسحب لتحريك الكابشن (لو محدد سطر، يتحرك هو بس)"
+            title={t("shell.dragCaptionTitle")}
             onPointerDown={onDrag}
             style={{
               position: "absolute",
@@ -169,7 +171,7 @@ export function PlayerPanel() {
           ) : null}
         </div>
       </div>
-      <div className="row" style={{ padding: "6px 12px", borderTop: "1px solid var(--line)", background: "var(--panel)", direction: "rtl" }}>
+      <div className="row" style={{ padding: "6px 12px", borderTop: "1px solid var(--line)", background: "var(--panel)" }}>
         <button onClick={(e) => player.toggle(e)} title="Space">{playing ? "⏸" : "▶︎"}</button>
         <span dir="ltr" style={{ fontVariantNumeric: "tabular-nums" }}>
           {fmtTime(frame / tl.fps)} / {fmtTime(tl.durationInFrames / tl.fps)}
@@ -178,7 +180,7 @@ export function PlayerPanel() {
         <span className="grow" />
         <label className="row muted">
           <input type="checkbox" checked={guides} onChange={(e) => useStore.setState({ guides: e.target.checked })} />
-          حدود Reels
+          {t("shell.reelsGuides")}
         </label>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 
-export const metadata = { title: "Cut & Caption · قص وكابشن", description: "محرر الكابشن والقص العربي — محلي" };
+export const metadata = { title: "Cut & Caption · قص وكابشن", description: "Local editor for silence cuts, captions and zooms" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

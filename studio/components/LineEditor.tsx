@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { captionText, editCaptionText } from "@/lib/edits";
+import { useT } from "@/lib/i18n";
 import { beginLiveEdit, useStore } from "@/lib/store";
+import { contentDir } from "@/lib/lang";
 
 /** Edit a whole caption line as text — add, remove or change words; the preview updates live. */
 export function LineEditor({ captionId, onDone, autoFocus = true, rows = 2 }: { captionId: string; onDone?: () => void; autoFocus?: boolean; rows?: number }) {
   const project = useStore((s) => s.project)!;
+  const t = useT();
   const c = project.captions.find((x) => x.id === captionId);
   const [value, setValue] = useState(() => (c ? captionText(project, c) : ""));
   const session = useRef<ReturnType<typeof beginLiveEdit> | null>(null);
@@ -31,7 +34,7 @@ export function LineEditor({ captionId, onDone, autoFocus = true, rows = 2 }: { 
     if (s) {
       if (keep) {
         s.apply((p) => void editCaptionText(p, captionId, value));
-        s.commit("تعديل نص السطر");
+        s.commit(t("timeline.editLineText"));
       } else s.cancel();
     }
     onDone?.();
@@ -39,7 +42,7 @@ export function LineEditor({ captionId, onDone, autoFocus = true, rows = 2 }: { 
 
   return (
     <textarea
-      dir="rtl"
+      dir={project ? contentDir(project) : "auto"}
       rows={rows}
       autoFocus={autoFocus}
       value={value}
@@ -53,7 +56,7 @@ export function LineEditor({ captionId, onDone, autoFocus = true, rows = 2 }: { 
       }}
       onBlur={() => finish(true)}
       style={{ width: "100%", fontSize: 15, lineHeight: 1.7, resize: "vertical" }}
-      title="Enter للحفظ · Esc للإلغاء — الكلمات اللي ما تغيّرت تحتفظ بتوقيتها، والجديدة تاخذ وقت من اللي جنبها"
+      title={t("timeline.lineEditorTitle")}
     />
   );
 }

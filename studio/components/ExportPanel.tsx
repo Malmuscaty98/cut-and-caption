@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { translate, useT } from "@/lib/i18n";
 import { useStore } from "@/lib/store";
 import { Field, Select } from "./fields";
 
@@ -34,10 +35,11 @@ export function useJob(name: string) {
 export async function runJob(name: string, cmd: string, opts: Record<string, string | boolean> = {}) {
   const r = await fetch(`/api/projects/${encodeURIComponent(name)}/run`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cmd, opts }) });
   window.dispatchEvent(new Event("cc-job"));
-  if (r.status === 409) useStore.getState().notify("فيه عملية شغّالة — انتظرها تخلص");
+  if (r.status === 409) useStore.getState().notify(translate(useStore.getState().lang, "shell.jobBusy"));
 }
 
 export function ExportPanel() {
+  const t = useT();
   const project = useStore((s) => s.project)!;
   const name = useStore((s) => s.name);
   const dirty = useStore((s) => s.dirty);
@@ -45,36 +47,46 @@ export function ExportPanel() {
   const job = useJob(name);
   const busy = job?.status === "running";
   const proposed = project.cuts.filter((c) => c.proposed).length;
+  // Sentences with an element inside: the dictionary keeps the whole sentence, the element replaces {path} / {setting}.
+  const [filesPre, filesPost] = t("shell.exportFilesIn").split("{path}");
+  const [igPre, igPost] = t("shell.exportIgTip").split("{setting}");
 
   return (
     <>
       <div className="section">
-        <h4>تصدير الفيديو</h4>
-        <Field label="المقاس">
-          <Select value={aspect} onChange={setAspect} options={[["9:16", "9:16 — Reels / TikTok / Shorts"], ["4:5", "4:5 — منشور"], ["1:1", "1:1 — مربع"], ["16:9", "16:9 — يوتيوب"]]} />
+        <h4>{t("shell.exportTitle")}</h4>
+        <Field label={t("shell.exportSize")}>
+          <Select value={aspect} onChange={setAspect} options={[["9:16", "9:16 — Reels / TikTok / Shorts"], ["4:5", t("shell.aspectPost")], ["1:1", t("shell.aspectSquare")], ["16:9", t("shell.aspectYoutube")]]} />
         </Field>
-        {proposed ? <p style={{ margin: 0, color: "var(--cut-filler)" }}>فيه {proposed} قصة مقترحة ما قررت فيها — بتنصدّر بدونها.</p> : null}
+        {proposed ? <p style={{ margin: 0, color: "var(--cut-filler)" }}>{t("shell.exportProposed", { n: proposed })}</p> : null}
         <div className="row" style={{ flexWrap: "wrap" }}>
           <button className="primary" disabled={busy || dirty} onClick={() => runJob(name, "render", { aspect })}>
-            صدّر MP4
+            {t("shell.exportMp4")}
           </button>
-          <button disabled={busy || dirty} onClick={() => runJob(name, "render", { aspect, draft: true })} title="من الـ proxy — أسرع، للمراجعة">
-            نسخة سريعة
+          <button disabled={busy || dirty} onClick={() => runJob(name, "render", { aspect, draft: true })} title={t("shell.exportDraftTitle")}>
+            {t("shell.exportDraft")}
           </button>
           <button disabled={busy || dirty} onClick={() => runJob(name, "srt")}>
             SRT
           </button>
         </div>
-        <p className="muted" style={{ margin: 0 }}>الملفات تنحفظ في <code dir="ltr">projects/{name}/renders/</code> مع نسخة من project.json.</p>
+        <p className="muted" style={{ margin: 0 }}>
+          {filesPre}
+          <code dir="ltr">projects/{name}/renders/</code>
+          {filesPost}
+        </p>
         <p className="muted" style={{ margin: 0, lineHeight: 1.8 }}>
-          الجودة: 1080×1920، BT.709، x264 slow (CRF 17)، والصوت من ملفك بدون إعادة ضغط لو ما فيه قصات.
-          <br />انستقرام: الإعدادات ← استخدام البيانات وجودة الوسائط ← فعّل <b>«Upload at highest quality»</b>. تيك توك: فعّل الرفع بجودة عالية (HD).
+          {t("shell.exportQuality")}
+          <br />
+          {igPre}
+          <b>{t("shell.exportIgSetting")}</b>
+          {igPost}
         </p>
       </div>
       {job ? (
         <div className="section">
           <h4>
-            {job.cmd} — {job.status === "running" ? "شغّال" : job.status === "done" ? "خلص ✓" : "فشل ✗"}
+            {t(`common.job.${job.cmd}`)} — {job.status === "running" ? t("shell.jobRunning") : job.status === "done" ? t("shell.jobDone") : t("shell.jobFailed")}
           </h4>
           <div className="progress" style={{ width: "100%" }}>
             <div style={{ width: `${Math.round(job.progress * 100)}%` }} />
@@ -82,9 +94,9 @@ export function ExportPanel() {
           {job.out ? (
             <div className="row" style={{ flexWrap: "wrap" }}>
               <code dir="ltr" style={{ fontSize: 11, wordBreak: "break-all" }}>{job.out}</code>
-              {job.out.includes(`/projects/${name}/`) ? (
-                <a href={`/api/media/${encodeURIComponent(name)}/${job.out.split(`/projects/${name}/`)[1]}`} target="_blank" rel="noreferrer">
-                  افتح
+              {job.out.replace(/\\/g, "/").includes(`/projects/${name}/`) ? (
+                <a href={`/api/media/${encodeURIComponent(name)}/${job.out.replace(/\\/g, "/").split(`/projects/${name}/`)[1]}`} target="_blank" rel="noreferrer">
+                  {t("shell.openFile")}
                 </a>
               ) : null}
             </div>

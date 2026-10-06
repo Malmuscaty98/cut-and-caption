@@ -15,9 +15,9 @@ description: >-
 
 | # | Feature | Where it's controlled |
 |---|---|---|
-| 1 | **Silence cuts** — only acoustic silence is cut, never a word; tight / natural presets | editor «القص» tab + the cuts track |
-| 2 | **Captions** — Whisper word timings + your review pass (spelling, glossary, fillers, lines) | editor «الستايل» tab, transcript, captions track |
-| 3 | **Zooms** — punch-ins at the cuts, smooth pushes on emphasized words | editor «الزوم» tab + the zoom track |
+| 1 | **Silence cuts** — only acoustic silence is cut, never a word; tight / natural presets | editor Cuts tab («القص») + the cuts track |
+| 2 | **Captions** — Whisper word timings + your review pass (spelling, glossary, fillers, lines) | editor Style tab («الستايل»), transcript, captions track |
+| 3 | **Zooms** — punch-ins at the cuts, smooth pushes on emphasized words | editor Zoom tab («الزوم») + the zoom track |
 
 …and **export**: MP4 (H.264, BT.709) + SRT, sized for the platform.
 
@@ -79,10 +79,10 @@ Q studio <slug>          # starts it if needed and opens http://127.0.0.1:4318/e
 ```
 
 Tell the user what they can do: click a word to jump; ✎ to retype a line (timing kept); drag
-captions on the preview; «الستايل» font / size / colors / position / animation / auto contrast;
-«القص» silence settings; «الزوم» automatic zooms; on the timeline, drag edges of cuts, captions and
-zooms, drag on an empty track to add one; ⌘Z / Ctrl+Z undoes. Your edits to `project.json`
-appear live in the editor.
+captions on the preview; Style («الستايل»): font / size / colors / position / animation / auto
+contrast; Cuts («القص»): silence settings; Zoom («الزوم»): automatic zooms; on the timeline, drag
+edges of cuts, captions and zooms, drag on an empty track to add one; ⌘Z / Ctrl+Z undoes. The
+top bar switches the editor between Arabic and English. Your edits to `project.json` appear live.
 
 ## Step 5 — export
 

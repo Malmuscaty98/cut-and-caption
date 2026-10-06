@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cutWords, editWordText, splitCaptionAt } from "@/lib/edits";
+import { useT } from "@/lib/i18n";
+import { contentDir } from "@/lib/lang";
 import { fmtTime, useStore } from "@/lib/store";
 import { activeCaption } from "@/lib/timeline";
 import { useTimeline } from "./hooks";
@@ -11,6 +13,7 @@ export function Transcript() {
   const selection = useStore((s) => s.selection);
   const frame = useStore((s) => s.frame);
   const playing = useStore((s) => s.playing);
+  const t = useT();
   const tl = useTimeline()!;
   const [editing, setEditing] = useState<string | null>(null);
   const [lineEditing, setLineEditing] = useState<string | null>(null);
@@ -66,19 +69,19 @@ export function Transcript() {
   return (
     <div className="transcript" ref={listRef}>
       <div className="panel-title">
-        النص
+        {t("timeline.transcript")}
         <span className="muted" style={{ fontWeight: 400 }}>
-          {project.captions.length} سطر · {project.words.length} كلمة
+          {t("timeline.lines", { lines: project.captions.length, words: project.words.length })}
         </span>
       </div>
       {ids.length ? (
         <div className="section" style={{ position: "sticky", top: 37, zIndex: 2, background: "var(--panel-2)" }}>
           <div className="row" style={{ flexWrap: "wrap" }}>
-            <span className="muted">{ids.length} كلمة</span>
+            <span className="muted">{t("timeline.selectedWords", { n: ids.length })}</span>
             {selectedAreCut ? (
               <button
                 onClick={() =>
-                  upd("إلغاء القص", (d) => {
+                  upd(t("timeline.uncut"), (d) => {
                     const ws = d.words.filter((w) => ids.includes(w.id));
                     d.cuts.forEach((c) => {
                       if (c.enabled && ws.some((w) => (w.start + w.end) / 2 >= c.start && (w.start + w.end) / 2 < c.end)) {
@@ -89,22 +92,22 @@ export function Transcript() {
                   })
                 }
               >
-                رجّع الكلمات
+                {t("timeline.restoreWords")}
               </button>
             ) : (
-              <button onClick={() => upd("قص الكلمات", (d) => cutWords(d, ids))}>
-                قص <span className="kbd">C</span>
+              <button onClick={() => upd(t("timeline.cutWords"), (d) => cutWords(d, ids))}>
+                {t("timeline.cut")} <span className="kbd">C</span>
               </button>
             )}
-            <button onClick={() => upd("إبراز", (d) => {
+            <button onClick={() => upd(t("timeline.emphasize"), (d) => {
               const on = !d.words.find((w) => w.id === ids[0])?.emphasis;
               d.words.forEach((w) => ids.includes(w.id) && (w.emphasis = on));
             })}>
-              إبراز <span className="kbd">E</span>
+              {t("timeline.emphasize")} <span className="kbd">E</span>
             </button>
-            <button onClick={() => upd("سطر جديد", (d) => void splitCaptionAt(d, ids[0]))}>سطر جديد هنا</button>
-            <button title="تمديد الكلمة بالكشيدة (ـ) مثل «يستعمـل»" onClick={() => upd("كشيدة", (d) => d.words.forEach((w) => ids.includes(w.id) && (w.kashida = !w.kashida)))}>
-              كشيدة
+            <button onClick={() => upd(t("timeline.newLine"), (d) => void splitCaptionAt(d, ids[0]))}>{t("timeline.newLineHere")}</button>
+            <button title={t("timeline.kashidaTitle")} onClick={() => upd(t("timeline.kashida"), (d) => d.words.forEach((w) => ids.includes(w.id) && (w.kashida = !w.kashida)))}>
+              {t("timeline.kashida")}
             </button>
           </div>
         </div>
@@ -114,15 +117,15 @@ export function Transcript() {
         const isSel = selection?.kind === "caption" && selection.id === c.id;
         return (
           <div key={c.id} data-cap={c.id} className={`cap-row${isCur ? " active" : ""}${isSel ? " selected" : ""}`}>
-            <div className="cap-num" title={`${fmtTime(c.start)} — اضغط لتحديد السطر، دبل كلك لتعديل النص`} onClick={() => useStore.getState().select({ kind: "caption", id: c.id })} onDoubleClick={() => setLineEditing(c.id)}>
+            <div className="cap-num" title={t("timeline.lineNumTitle", { time: fmtTime(c.start) })} onClick={() => useStore.getState().select({ kind: "caption", id: c.id })} onDoubleClick={() => setLineEditing(c.id)}>
               {i + 1}
-              <div className="line-edit-btn" title="عدّل نص السطر (أضف / غيّر / احذف كلمات)" onClick={(e) => { e.stopPropagation(); setLineEditing(c.id); }}>✎</div>
-              {c.styleOverride || c.position ? <div title="ستايل خاص">◆</div> : null}
+              <div className="line-edit-btn" title={t("timeline.editLineTitle")} onClick={(e) => { e.stopPropagation(); setLineEditing(c.id); }}>✎</div>
+              {c.styleOverride || c.position ? <div title={t("timeline.customStyle")}>◆</div> : null}
             </div>
             {lineEditing === c.id ? (
               <LineEditor captionId={c.id} onDone={() => setLineEditing(null)} />
             ) : (
-            <div className="cap-words" dir="rtl">
+            <div className="cap-words" dir={contentDir(project)}>
               {c.wordIds.map((id) => {
                 const w = project.words.find((x) => x.id === id);
                 if (!w) return null;
@@ -137,14 +140,14 @@ export function Transcript() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           const v = (e.target as HTMLInputElement).value;
-                          upd("تعديل كلمة", (d) => editWordText(d, id, v));
+                          upd(t("timeline.editWord"), (d) => editWordText(d, id, v));
                           setEditing(null);
                         }
                         if (e.key === "Escape") setEditing(null);
                       }}
                       onBlur={(e) => {
                         const v = e.target.value;
-                        if (v !== w.text) upd("تعديل كلمة", (d) => editWordText(d, id, v));
+                        if (v !== w.text) upd(t("timeline.editWord"), (d) => editWordText(d, id, v));
                         setEditing(null);
                       }}
                     />
@@ -160,10 +163,10 @@ export function Transcript() {
                   srcNow >= w.start && srcNow < w.end ? "now" : "",
                 ].join(" ");
                 const tip = [
-                  `${fmtTime(w.start)} · ثقة ${w.conf.toFixed(2)}`,
+                  t("timeline.wordInfo", { time: fmtTime(w.start), conf: w.conf.toFixed(2) }),
                   w.orig ? `Whisper: «${w.orig}»` : "",
-                  st.proposed ? "قصة مقترحة" : "",
-                  "دبل كلك للتعديل",
+                  st.proposed ? t("timeline.proposedCut") : "",
+                  t("timeline.doubleClickToEdit"),
                 ]
                   .filter(Boolean)
                   .join("\n");

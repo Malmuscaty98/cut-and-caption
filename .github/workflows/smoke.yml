@@ -30,6 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+      - name: editor strings (Arabic + English)
+        run: |
+          if command -v python3 >/dev/null 2>&1; then python3 scripts/check_i18n.py; else python scripts/check_i18n.py; fi
       - name: setup
         run: bin/cut-and-caption setup --model tiny --yes
       - name: sample clip (JFK, public domain)

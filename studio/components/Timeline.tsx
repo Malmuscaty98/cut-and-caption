@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { addCutRange } from "@/lib/edits";
+import { useT } from "@/lib/i18n";
 import { fmtTime, newId, useStore, type Selection } from "@/lib/store";
 import type { Project } from "@/lib/types";
 import { useTimeline } from "./hooks";
 
 const CUT_COLOR: Record<string, string> = { silence: "var(--cut-silence)", filler: "var(--cut-filler)", retake: "var(--cut-retake)", manual: "var(--cut-manual)" };
-const CUT_LABEL: Record<string, string> = { silence: "سكوت", filler: "حشو", retake: "إعادة", manual: "يدوي" };
 
 type Drag = { kind: string; id: string; edge: "l" | "r" | "move"; t0: number; start: number; end: number; moved: boolean; before: Project };
 
@@ -28,6 +28,7 @@ export function Timeline() {
   const frame = useStore((s) => s.frame);
   const playing = useStore((s) => s.playing);
   const view = useStore((s) => s.view);
+  const t = useT();
   const tl = useTimeline()!;
   const scrollRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,6 +42,7 @@ export function Timeline() {
   const width = Math.ceil(dur * pps) + 40;
   const playSec = tl.outToSrc(frame) / fps;
   const upd = useStore.getState().update;
+  const cutLabel = (reason: string) => t(`common.cut.${reason}`);
 
   useEffect(() => {
     fetch(`/api/projects/${encodeURIComponent(name)}/waveform`).then((r) => r.json()).then(setPeaks).catch(() => {});
@@ -126,15 +128,15 @@ export function Timeline() {
       const d = drag.current!;
       drag.current = null;
       if (d.moved) {
-        useStore.setState((st) => ({ past: [...st.past, d.before], future: [], dirty: true, lastLabel: "تعديل على التايملاين" }));
+        useStore.setState((st) => ({ past: [...st.past, d.before], future: [], dirty: true, lastLabel: t("timeline.timelineEdit") }));
       } else {
         const sel: Selection = { kind: kind as "cut", id };
         const cur = useStore.getState().selection;
         // Click a selected cut or zoom again: switch it on/off. Otherwise: select (+ seek for others).
         if (kind === "cut" && cur?.kind === "cut" && cur.id === id) {
-          upd("تعطيل/تفعيل قصة", (p) => p.cuts.forEach((c) => c.id === id && ((c.enabled = !c.enabled), (c.proposed = false))));
+          upd(t("timeline.toggleCut"), (p) => p.cuts.forEach((c) => c.id === id && ((c.enabled = !c.enabled), (c.proposed = false))));
         } else if (kind === "zoom" && cur?.kind === "zoom" && cur.id === id) {
-          upd("تعطيل/تفعيل زوم", (p) => p.zooms.forEach((z) => z.id === id && ((z.enabled = !z.enabled), (z.proposed = false))));
+          upd(t("timeline.toggleZoom"), (p) => p.zooms.forEach((z) => z.id === id && ((z.enabled = !z.enabled), (z.proposed = false))));
         } else if (kind !== "cut") seekSec(start + 0.001);
         useStore.getState().select(sel);
       }
@@ -157,7 +159,7 @@ export function Timeline() {
       setGhost(null);
       if (Math.abs(b - a) * pps < 4) return seekSec(a);
       let id: string | null = null;
-      upd("قصة يدوية", (p) => void (id = addCutRange(p, a, b)));
+      upd(t("timeline.manualCut"), (p) => void (id = addCutRange(p, a, b)));
       if (id) useStore.getState().select({ kind: "cut", id });
     };
     window.addEventListener("pointermove", move);
@@ -178,7 +180,7 @@ export function Timeline() {
       setZoomGhost(null);
       if (Math.abs(b - a) * pps < 4) return seekSec(a);
       let id = "";
-      upd("زوم يدوي", (p) => {
+      upd(t("timeline.manualZoom"), (p) => {
         id = newId("z", p.zooms);
         p.zooms.push({ id, start: +Math.min(a, b).toFixed(3), end: +Math.max(a, b).toFixed(3), scale: 1.2, x: 0.5, y: 0.35, mode: "cut", reason: "manual", enabled: true, proposed: false });
         p.zooms.sort((x, y) => x.start - y.start);
@@ -204,6 +206,7 @@ export function Timeline() {
   const item = (kind: string, id: string, start: number, end: number, color: string, label: string, opts: { off?: boolean; proposed?: boolean; resizable?: boolean; title?: string } = {}) => (
     <div
       key={`${kind}-${id}`}
+      dir="auto"
       className={`tl-item${isSel(kind, id) ? " sel" : ""}${opts.off ? " off" : ""}${opts.proposed ? " proposed" : ""}`}
       style={{ left: start * pps, width: Math.max(4, (end - start) * pps), background: color }}
       title={opts.title ?? label}
@@ -233,39 +236,39 @@ export function Timeline() {
   return (
     <div className="timeline">
       <div className="tl-toolbar">
-        <button className={view === "output" ? "active" : ""} onClick={() => useStore.setState({ view: "output", frame: 0, seekTo: 0 })} title="المعاينة بعد تطبيق القصات">
-          بعد القص
+        <button className={view === "output" ? "active" : ""} onClick={() => useStore.setState({ view: "output", frame: 0, seekTo: 0 })} title={t("timeline.viewOutputTitle")}>
+          {t("timeline.viewOutput")}
         </button>
-        <button className={view === "source" ? "active" : ""} onClick={() => useStore.setState({ view: "source", frame: 0, seekTo: 0 })} title="الفيديو الأصلي كامل والقصات باللون الأحمر">
-          الأصل
+        <button className={view === "source" ? "active" : ""} onClick={() => useStore.setState({ view: "source", frame: 0, seekTo: 0 })} title={t("timeline.viewSourceTitle")}>
+          {t("timeline.viewSource")}
         </button>
         <span className="muted">
-          {fmtTime(dur)} → {fmtTime(dur - cutTotal)}
+          <span dir="ltr">{fmtTime(dur)} → {fmtTime(dur - cutTotal)}</span>
         </span>
         <span className="grow" />
         {proposals ? (
           <button
-            title="تفعيل قصات الحشو والإعادات المقترحة"
-            onClick={() => upd("قبول المقترحات", (p) => p.cuts.forEach((c) => c.proposed && ((c.enabled = true), (c.proposed = false))))}
+            title={t("timeline.acceptCutsTitle")}
+            onClick={() => upd(t("timeline.acceptProposals"), (p) => p.cuts.forEach((c) => c.proposed && ((c.enabled = true), (c.proposed = false))))}
           >
-            اقبل القصات المقترحة ({proposals})
+            {t("timeline.acceptCuts", { n: proposals })}
           </button>
         ) : null}
         {zoomProposals ? (
-          <button title="تفعيل الزوم المقترح" onClick={() => upd("قبول الزوم المقترح", (p) => p.zooms.forEach((z) => z.proposed && ((z.enabled = true), (z.proposed = false))))}>
-            اقبل الزوم المقترح ({zoomProposals})
+          <button title={t("timeline.acceptZoomsTitle")} onClick={() => upd(t("timeline.acceptZoomProposals"), (p) => p.zooms.forEach((z) => z.proposed && ((z.enabled = true), (z.proposed = false))))}>
+            {t("timeline.acceptZooms", { n: zoomProposals })}
           </button>
         ) : null}
-        <span className="muted">تكبير</span>
+        <span className="muted">{t("timeline.zoomSlider")}</span>
         <input type="range" min={15} max={300} value={pps} onChange={(e) => useStore.setState({ pxPerSec: +e.target.value })} style={{ width: 110 }} />
       </div>
       <div className="tl-body">
         <div className="tl-heads">
           <div className="tl-head ruler" />
-          <div className="tl-head wave">الصوت</div>
-          <div className="tl-head">القصات</div>
-          <div className="tl-head">الكابشن</div>
-          <div className="tl-head">الزوم</div>
+          <div className="tl-head wave">{t("timeline.trackAudio")}</div>
+          <div className="tl-head">{t("timeline.trackCuts")}</div>
+          <div className="tl-head">{t("timeline.trackCaptions")}</div>
+          <div className="tl-head">{t("timeline.trackZooms")}</div>
         </div>
         <div
           className="tl-scroll"
@@ -289,12 +292,12 @@ export function Timeline() {
               <canvas ref={canvasRef} style={{ display: "block" }} />
             </div>
             {/* cuts */}
-            <div className="tl-track" onPointerDown={startNewCut} title="اسحب في مكان فاضي لإضافة قصة يدوية">
+            <div className="tl-track" onPointerDown={startNewCut} title={t("timeline.cutTrackTitle")}>
               {project.cuts.map((c) =>
-                item("cut", c.id, c.start, c.end, CUT_COLOR[c.reason], CUT_LABEL[c.reason], {
+                item("cut", c.id, c.start, c.end, CUT_COLOR[c.reason], cutLabel(c.reason), {
                   off: !c.enabled,
                   proposed: c.proposed,
-                  title: `${CUT_LABEL[c.reason]} ${fmtTime(c.start)}–${fmtTime(c.end)} (${(c.end - c.start).toFixed(2)} ث)${c.note ? "\n" + c.note : ""}\nكلك مرة للتحديد، ومرة ثانية للتفعيل/التعطيل`,
+                  title: `${cutLabel(c.reason)} ${fmtTime(c.start)}–${fmtTime(c.end)} (${(c.end - c.start).toFixed(2)} ${t("common.sec")})${c.note ? "\n" + c.note : ""}\n${t("timeline.cutItemHint")}`,
                 }),
               )}
               {ghost ? <div className="tl-ghost" style={{ left: ghost.a * pps, width: (ghost.b - ghost.a) * pps }} /> : null}
@@ -307,7 +310,7 @@ export function Timeline() {
               })}
             </div>
             {/* zooms */}
-            <div className="tl-track" onPointerDown={startNewZoom} title="اسحب في مكان فاضي لإضافة زوم — كلك على زوم محدد يطفيه/يشغله">
+            <div className="tl-track" onPointerDown={startNewZoom} title={t("timeline.zoomTrackTitle")}>
               {project.zooms.map((z) => item("zoom", z.id, z.start, z.end, "var(--zoom)", `${z.scale.toFixed(2)}×${z.mode === "smooth" ? " ⤢" : ""}`, { off: !z.enabled, proposed: z.proposed }))}
               {zoomGhost ? <div className="tl-ghost" style={{ left: zoomGhost.a * pps, width: (zoomGhost.b - zoomGhost.a) * pps }} /> : null}
             </div>

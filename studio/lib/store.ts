@@ -1,5 +1,7 @@
 "use client";
 import { create } from "zustand";
+import { translate } from "./i18n";
+import { initialLang, type Lang } from "./lang";
 import type { Preset, Project } from "./types";
 
 export type Selection =
@@ -27,6 +29,7 @@ interface State {
   playing: boolean;
   pxPerSec: number;
   toast: string | null;
+  lang: Lang;
 
   load: (name: string, project: Project, mtime: number) => void;
   update: (label: string, fn: (p: Project) => void) => void;
@@ -59,6 +62,8 @@ export const useStore = create<State>((set, get) => ({
   playing: false,
   pxPerSec: 60,
   toast: null,
+  // The editor is browser-only (no SSR), so the saved / browser language can be read right away.
+  lang: typeof window === "undefined" ? "ar" : initialLang(),
 
   load: (name, project, mtime) => set({ name, project, baseMtime: mtime, past: [], future: [], dirty: false, selection: null }),
 
@@ -86,19 +91,19 @@ export const useStore = create<State>((set, get) => ({
       past: cur ? [...s.past.slice(-MAX_HISTORY + 1), cur] : s.past,
       future: [],
       dirty: false,
-      toast: "تحدّث المشروع من برّا (Claude) — ⌘Z يرجّع",
+      toast: translate(s.lang, "shell.externalChange"),
     }));
   },
 
   undo: () => {
     const { past, project } = get();
     if (!past.length || !project) return;
-    set((s) => ({ project: past[past.length - 1], past: past.slice(0, -1), future: [project, ...s.future], dirty: true, lastLabel: "تراجع" }));
+    set((s) => ({ project: past[past.length - 1], past: past.slice(0, -1), future: [project, ...s.future], dirty: true, lastLabel: translate(s.lang, "shell.undo") }));
   },
   redo: () => {
     const { future, project } = get();
     if (!future.length || !project) return;
-    set((s) => ({ project: future[0], future: future.slice(1), past: [...s.past, project], dirty: true, lastLabel: "إعادة" }));
+    set((s) => ({ project: future[0], future: future.slice(1), past: [...s.past, project], dirty: true, lastLabel: translate(s.lang, "shell.redo") }));
   },
 
   select: (selection) => set({ selection }),

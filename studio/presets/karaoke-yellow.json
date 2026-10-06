@@ -1,7 +1,9 @@
 {
   "id": "karaoke-yellow",
-  "name": "Karaoke أصفر",
-  "description": "كلمة كلمة: الكلمة الحالية صفراء مع حد أسود.",
+  "name": "Karaoke — yellow",
+  "nameAr": "كاريوكي أصفر",
+  "description": "Word by word: the current word turns yellow, with a black outline.",
+  "descriptionAr": "كلمة كلمة: الكلمة الحالية صفراء مع حد أسود.",
   "style": {
     "fontFamily": "IBM Plex Sans Arabic",
     "fontWeight": 700,
