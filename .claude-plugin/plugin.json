@@ -1,0 +1,7 @@
+{
+  "name": "qass",
+  "version": "0.1.0",
+  "description": "Cut silences, add precise word-level captions (any language — Arabic rendered right) and punch-in zooms on talking-head videos, fine-tune everything in a local editor, export for Reels / TikTok / Shorts. Runs entirely on your computer (macOS and Windows).",
+  "license": "MIT",
+  "keywords": ["video", "captions", "subtitles", "silence-removal", "jump-cut", "zoom", "reels", "tiktok", "shorts", "arabic", "whisper", "remotion"]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "classic",
+  "name": "Classic — white + soft shadow",
+  "description": "The whole phrase at once, bold white with a soft shadow, on the chest. Auto contrast: dark text on light backgrounds.",
+  "style": {
+    "fontFamily": "IBM Plex Sans Arabic",
+    "fontWeight": 700,
+    "fontSize": 66,
+    "lineHeight": 1.35,
+    "maxWidth": 0.86,
+    "maxLines": 2,
+    "textColor": "#FFFFFF",
+    "activeColor": "#FFFFFF",
+    "emphasisColor": "#FFFFFF",
+    "emphasisScale": 1,
+    "strokeColor": "#000000",
+    "strokeWidth": 0,
+    "shadow": "0 3px 6px rgba(0,0,0,0.55), 0 6px 22px rgba(0,0,0,0.45)",
+    "box": null,
+    "position": {
+      "x": 0.5,
+      "y": 0.72
+    },
+    "animation": "none",
+    "digits": "western",
+    "autoContrast": {
+      "enabled": true,
+      "threshold": 0.5,
+      "textColor": "#161C1A",
+      "shadow": "0 2px 4px rgba(255,255,255,0.6), 0 6px 20px rgba(255,255,255,0.35)"
+    }
+  },
+  "zoom": {
+    "cutZoomScale": 1.2,
+    "x": 0.5,
+    "y": 0.35
+  }
+}

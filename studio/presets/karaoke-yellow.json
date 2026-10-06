@@ -1,0 +1,27 @@
+{
+  "id": "karaoke-yellow",
+  "name": "Karaoke أصفر",
+  "description": "كلمة كلمة: الكلمة الحالية صفراء مع حد أسود.",
+  "style": {
+    "fontFamily": "IBM Plex Sans Arabic",
+    "fontWeight": 700,
+    "fontSize": 70,
+    "lineHeight": 1.35,
+    "maxWidth": 0.72,
+    "maxLines": 2,
+    "textColor": "#FFFFFF",
+    "activeColor": "#FFD400",
+    "emphasisColor": "#FFD400",
+    "emphasisScale": 1,
+    "strokeColor": "#000000",
+    "strokeWidth": 10,
+    "shadow": "0 4px 10px rgba(0,0,0,0.5)",
+    "box": null,
+    "position": {
+      "x": 0.5,
+      "y": 0.72
+    },
+    "animation": "word-highlight",
+    "digits": "western"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "_doc": "Your glossary: names, brands and phrases Whisper should spell your way. `text` is the spelling you want, `variants` are what Whisper tends to write instead (any language). Claude applies it in the review pass; the first ~40 terms also bias the transcription. Edit this file in your Qass folder (QASS_HOME/glossary.json).",
+  "terms": [
+    { "text": "ChatGPT", "variants": ["شات جي بي تي", "تشات جي بي تي", "chat gpt"], "category": "tech" },
+    { "text": "Claude", "variants": ["كلود", "كلاود", "claude"], "category": "tech" },
+    { "text": "YouTube", "variants": ["يوتيوب", "youtube"], "category": "tech" },
+    { "text": "Instagram", "variants": ["انستقرام", "انستغرام", "instagram"], "category": "tech" },
+    { "text": "إن شاء الله", "variants": ["انشاء الله", "إنشاء الله", "ان شاء الله"], "category": "religious" },
+    { "text": "الحمد لله", "variants": ["الحمدلله", "الحمد الله"], "category": "religious" },
+    { "text": "ما شاء الله", "variants": ["ماشاء الله", "ماشالله"], "category": "religious" }
+  ]
+}

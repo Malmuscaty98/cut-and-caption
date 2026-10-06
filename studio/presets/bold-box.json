@@ -1,0 +1,32 @@
+{
+  "id": "bold-box",
+  "name": "صندوق أسود",
+  "description": "نص أبيض على صندوق أسود شبه شفاف، الكلمات تطلع وحدة وحدة.",
+  "style": {
+    "fontFamily": "Tajawal",
+    "fontWeight": 700,
+    "fontSize": 60,
+    "lineHeight": 1.35,
+    "maxWidth": 0.72,
+    "maxLines": 2,
+    "textColor": "#FFFFFF",
+    "activeColor": "#FFFFFF",
+    "emphasisColor": "#FFFFFF",
+    "emphasisScale": 1,
+    "strokeColor": "#000000",
+    "strokeWidth": 0,
+    "shadow": "",
+    "box": {
+      "color": "#000000",
+      "radius": 16,
+      "padding": 18,
+      "opacity": 0.7
+    },
+    "position": {
+      "x": 0.5,
+      "y": 0.68
+    },
+    "animation": "word-pop",
+    "digits": "western"
+  }
+}

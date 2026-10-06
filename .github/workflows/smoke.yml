@@ -1,0 +1,63 @@
+# End-to-end smoke test on the three kinds of machines Qass supports: setup → analyze → zoom →
+# render → editor. Uses Whisper "tiny" and a public-domain speech sample to stay fast.
+name: smoke
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14        # Apple Silicon (no Metal in CI VMs → faster-whisper here)
+            whisper: faster
+          - os: macos-13        # Intel Mac
+            whisper: ""
+          - os: windows-latest  # Windows x64 (Git Bash, like Claude Code)
+            whisper: ""
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    env:
+      QASS_DATA: ${{ github.workspace }}/.ci/data
+      QASS_HOME: ${{ github.workspace }}/.ci/home
+      QASS_WHISPER: ${{ matrix.whisper }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: setup
+        run: bin/qass setup --model tiny --yes
+      - name: sample clip (JFK, public domain)
+        run: |
+          curl -sSL -o jfk.wav https://github.com/ggml-org/whisper.cpp/raw/master/samples/jfk.wav
+          bin/qass ffmpeg -v error -y -f lavfi -i "color=c=0x445566:s=1080x1920:r=30" -i jfk.wav -shortest \
+            -c:v libx264 -pix_fmt yuv420p -c:a aac sample.mp4
+      - name: analyze
+        run: bin/qass analyze sample.mp4 --name ci --model tiny --language en
+      - name: zoom
+        run: bin/qass zoom ci --apply --no-emphasis
+      - name: validate
+        run: bin/qass pj validate ci
+      - name: render
+        run: |
+          bin/qass render ci --draft
+          test -s "$QASS_HOME/projects/ci/renders/ci-9x16-draft.mp4"
+          test -s "$QASS_HOME/projects/ci/renders/ci.srt"
+      - name: editor
+        run: |
+          bin/qass studio ci --no-browser
+          curl -sf http://127.0.0.1:4318/api/health
+          curl -sf http://127.0.0.1:4318/edit/ci > /dev/null
+          bin/qass studio --stop
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qass-${{ matrix.os }}
+          path: |
+            .ci/home/projects/ci/renders/
+            .ci/data/studio.log

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Qass launcher — macOS, Linux, and Windows Git Bash (the shell Claude Code uses on Windows).
+# The Python environment lives in the plugin's data folder, so it survives plugin updates.
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+root="$(dirname "$here")"
+data="${QASS_DATA:-${CLAUDE_PLUGIN_DATA:-$HOME/.qass}}"
+case "$data" in *'${'*) data="$HOME/.qass" ;; esac   # an unexpanded placeholder is not a path
+mkdir -p "$data"
+
+if ! command -v uv >/dev/null 2>&1; then              # installed but not on PATH yet
+  for d in "$HOME/.local/bin" "$HOME/.cargo/bin"; do [ -x "$d/uv" ] || [ -x "$d/uv.exe" ] && PATH="$d:$PATH"; done
+fi
+if ! command -v uv >/dev/null 2>&1; then
+  echo "✗ uv (the Python package manager Qass uses) is not installed. One line installs it:"
+  echo "  macOS:   curl -LsSf https://astral.sh/uv/install.sh | sh"
+  echo "  Windows: powershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\""
+  exit 127
+fi
+
+if command -v cygpath >/dev/null 2>&1; then           # Git Bash → native Windows paths for uv/python
+  root="$(cygpath -w "$root")"; data="$(cygpath -w "$data")"
+  sep='\'
+else
+  sep='/'
+fi
+export QASS_DATA="$data"
+export UV_PROJECT_ENVIRONMENT="${data}${sep}venv"
+export PYTHONUTF8=1 PYTHONIOENCODING=utf-8
+exec uv run --quiet --project "${root}${sep}engine" --frozen python "${root}${sep}engine${sep}run.py" "$@"

@@ -1,0 +1,12 @@
+# local development data (QASS_DATA / QASS_HOME pointed here while developing)
+.dev/
+# tooling
+node_modules/
+.next/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+studio/next-env.d.ts
+studio/tsconfig.tsbuildinfo
+studio/.remotion-bundle/

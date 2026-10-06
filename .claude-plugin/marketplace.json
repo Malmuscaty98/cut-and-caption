@@ -1,0 +1,11 @@
+{
+  "name": "qass",
+  "owner": { "name": "Qass" },
+  "plugins": [
+    {
+      "name": "qass",
+      "source": "./",
+      "description": "Silence cuts, precise captions and zooms for talking-head videos, with a local editor."
+    }
+  ]
+}
