@@ -3,7 +3,7 @@ import { Video } from "@remotion/media";
 import { AbsoluteFill, getRemotionEnvironment, interpolate, Sequence, useCurrentFrame } from "remotion";
 import { withAutoContrast } from "../lib/style";
 import { activeCaption, buildTimeline, type Timeline } from "../lib/timeline";
-import type { QassVideoProps } from "../lib/types";
+import type { CaptionedVideoProps } from "../lib/types";
 import { CaptionLayer } from "./Captions";
 import { PreviewFootage } from "./PreviewFootage";
 import { ensureFonts } from "./fonts";
@@ -62,7 +62,7 @@ const SafeArea: React.FC = () => (
   </AbsoluteFill>
 );
 
-export const QassVideo: React.FC<QassVideoProps> = ({ project, style, media, view, guides }) => {
+export const CaptionedVideo: React.FC<CaptionedVideoProps> = ({ project, style, media, view, guides }) => {
   const tl = useMemo(() => buildTimeline(project, view), [project, view]);
   const frame = useCurrentFrame();
   const cap = activeCaption(tl, frame);

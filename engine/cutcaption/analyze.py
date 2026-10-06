@@ -1,4 +1,4 @@
-"""`qass analyze` — media → project.json (words, silence cuts, first-pass captions, shots)."""
+"""`cut-and-caption analyze` — media → project.json (words, silence cuts, first-pass captions, shots)."""
 import json
 import os
 import re

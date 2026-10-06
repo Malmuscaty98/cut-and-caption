@@ -100,7 +100,7 @@ def caption_luma(grid: list[float], x: float = 0.5, y: float = 0.72, max_width: 
 
 
 def run(project_dir: Path, log=print):
-    """`qass shots` — (re)measure an existing project and save it."""
+    """`cut-and-caption shots` — (re)measure an existing project and save it."""
     pj = project_dir / "project.json"
     project = json.loads(pj.read_text(encoding="utf-8"))
     hist = project_dir / ".history"

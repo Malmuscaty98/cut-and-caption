@@ -116,7 +116,7 @@ function StyleFields({ s, set }: { s: CaptionStyle; set: (patch: Partial<Caption
   );
 }
 
-// Dark text on light backgrounds, decided per shot (engine: qass shots).
+// Dark text on light backgrounds, decided per shot (engine: cut-and-caption shots).
 function AutoContrastFields({ s, set }: { s: CaptionStyle; set: (patch: Partial<CaptionStyle>) => void }) {
   const name = useStore((st) => st.name);
   const shots = useStore((st) => st.project?.shots);
@@ -302,7 +302,7 @@ const SILENCE_PRESETS = {
   natural: { threshold: -35, minSilence: 0.45, padding: 0.1, minSpeech: 0.25 },
 };
 
-// Feature 1 — silence cuts with detailed control. Recomputing never cuts a word (engine `qass
+// Feature 1 — silence cuts with detailed control. Recomputing never cuts a word (engine `cut-and-caption
 // recut`); manual / filler / retake cuts are kept. Fine edits happen on the timeline.
 function CutsPanel() {
   const project = useStore((s) => s.project)!;
@@ -369,7 +369,7 @@ function CutsPanel() {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Feature 3 — punch-in zooms for the whole video (engine `qass zoom`); single zooms are drawn and
+// Feature 3 — punch-in zooms for the whole video (engine `cut-and-caption zoom`); single zooms are drawn and
 // edited on the timeline's zoom track.
 function ZoomPanel() {
   const project = useStore((s) => s.project)!;

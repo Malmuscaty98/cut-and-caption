@@ -1,4 +1,4 @@
-"""`qass render` / `qass srt` — the editor's own Remotion composition → MP4 (+ SRT).
+"""`cut-and-caption render` / `cut-and-caption srt` — the editor's own Remotion composition → MP4 (+ SRT).
 
 The picture is rendered muted by Remotion; the sound is added by ffmpeg afterwards: with no cuts
 the original audio stream is copied bit-exact, with cuts the click-free track from audio.py.
@@ -31,7 +31,7 @@ def run_script(script, args, emit):
     studio = studio_dir()
     tsx = studio / "node_modules" / "tsx" / "dist" / "cli.mjs"
     if not tsx.exists():
-        raise MediaError("the editor isn't installed yet — run: qass setup")
+        raise MediaError("the editor isn't installed yet — run: cut-and-caption setup")
     proc = subprocess.Popen([str(node_exe()), str(tsx), f"scripts/{script}", *args], cwd=studio,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=tool_env(),
                             text=True, encoding="utf-8", errors="replace", **_NO_WINDOW)

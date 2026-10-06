@@ -1,7 +1,7 @@
-// qass render — the same Remotion composition the editor previews, rendered to MP4 / stills.
+// cut-and-caption render — the same Remotion composition the editor previews, rendered to MP4 / stills.
 //   tsx scripts/render.ts <project name or folder> [--out file.mp4] [--stills 0,50,100] [--view source]
 //                         [--proxy] [--muted] [--crf 17] [--aspect 9:16] [--frames 0-250] [--progress-json]
-// The engine (qass render) runs it with --muted and adds the sound itself afterwards.
+// The engine (cut-and-caption render) runs it with --muted and adds the sound itself afterwards.
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
@@ -10,7 +10,7 @@ import { renderMedia, renderStill, selectComposition } from "@remotion/renderer"
 import { buildTimeline } from "../lib/timeline";
 import { resolveStyle } from "../lib/style";
 import { MIME, readPresets, resolveProject, safeJoin, STUDIO_DIR } from "../lib/server-files";
-import type { QassVideoProps } from "../lib/types";
+import type { CaptionedVideoProps } from "../lib/types";
 
 const args = process.argv.slice(2);
 const name = args[0];
@@ -72,7 +72,7 @@ async function main() {
   const view = (opt("--view") as "output" | "source") ?? "output";
   const style = resolveStyle(readPresets(), project.style.presetId, project.style.overrides);
   const srv = await serve({ p: dir });
-  const inputProps: QassVideoProps = {
+  const inputProps: CaptionedVideoProps = {
     project,
     style,
     view,
@@ -85,7 +85,7 @@ async function main() {
     publicDir: path.join(STUDIO_DIR, "public"),
     outDir: path.join(STUDIO_DIR, ".remotion-bundle"),
   });
-  const composition = await selectComposition({ serveUrl, id: "QassVideo", inputProps });
+  const composition = await selectComposition({ serveUrl, id: "CaptionedVideo", inputProps });
   const outDir = path.join(dir, "renders");
   fs.mkdirSync(outDir, { recursive: true });
 

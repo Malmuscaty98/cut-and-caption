@@ -12,7 +12,7 @@ The language is in `analysis.language`.
 **Fix the spelling, keep the speaker's words.** Never translate dialect into the standard
 language, never "improve" grammar, never paraphrase.
 
-- **Glossary** (`<Qass folder>/glossary.json`, `PJ` prints its path in `summary`): every
+- **Glossary** (`<Cut and Caption folder>/glossary.json`, `PJ` prints its path in `summary`): every
   `variants` match → the term's `text`. Product names, people, places, religious phrases.
   When the user corrects a name, offer to add it to the glossary so it's right next time.
 - **Arabic** (any dialect — Gulf, Levantine, Egyptian, Maghrebi, Iraqi…):

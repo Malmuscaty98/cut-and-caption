@@ -130,6 +130,33 @@ wheels = [
 ]
 
 [[package]]
+name = "cut-and-caption-engine"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "av", version = "18.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "av", version = "19.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "faster-whisper", marker = "platform_machine != 'arm64' or sys_platform != 'darwin'" },
+    { name = "huggingface-hub" },
+    { name = "imageio-ffmpeg" },
+    { name = "mlx-whisper", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "nodejs-wheel" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "av", specifier = ">=14" },
+    { name = "faster-whisper", marker = "platform_machine != 'arm64' or sys_platform != 'darwin'", specifier = ">=1.1" },
+    { name = "huggingface-hub", specifier = ">=0.24" },
+    { name = "imageio-ffmpeg", specifier = ">=0.6" },
+    { name = "mlx-whisper", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'", specifier = ">=0.4" },
+    { name = "nodejs-wheel", specifier = ">=22" },
+    { name = "numpy", specifier = ">=1.26" },
+]
+
+[[package]]
 name = "faster-whisper"
 version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -627,33 +654,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/de/94/980b50a6531b3019e45ddeada0626d45fa85cbe22300844a7983285bed3b/pyyaml-6.0.3-cp313-cp313-win32.whl", hash = "sha256:d0eae10f8159e8fdad514efdc92d74fd8d682c933a6dd088030f3834bc8e6b26", size = 137427, upload-time = "2025-09-25T21:32:32.58Z" },
     { url = "https://files.pythonhosted.org/packages/97/c9/39d5b874e8b28845e4ec2202b5da735d0199dbe5b8fb85f91398814a9a46/pyyaml-6.0.3-cp313-cp313-win_amd64.whl", hash = "sha256:79005a0d97d5ddabfeeea4cf676af11e647e41d81c9a7722a193022accdb6b7c", size = 154090, upload-time = "2025-09-25T21:32:33.659Z" },
     { url = "https://files.pythonhosted.org/packages/73/e8/2bdf3ca2090f68bb3d75b44da7bbc71843b19c9f2b9cb9b0f4ab7a5a4329/pyyaml-6.0.3-cp313-cp313-win_arm64.whl", hash = "sha256:5498cd1645aa724a7c71c8f378eb29ebe23da2fc0d7a08071d89469bf1d2defb", size = 140246, upload-time = "2025-09-25T21:32:34.663Z" },
-]
-
-[[package]]
-name = "qass-engine"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "av", version = "18.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "av", version = "19.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "faster-whisper", marker = "platform_machine != 'arm64' or sys_platform != 'darwin'" },
-    { name = "huggingface-hub" },
-    { name = "imageio-ffmpeg" },
-    { name = "mlx-whisper", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "nodejs-wheel" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "av", specifier = ">=14" },
-    { name = "faster-whisper", marker = "platform_machine != 'arm64' or sys_platform != 'darwin'", specifier = ">=1.1" },
-    { name = "huggingface-hub", specifier = ">=0.24" },
-    { name = "imageio-ffmpeg", specifier = ">=0.6" },
-    { name = "mlx-whisper", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'", specifier = ">=0.4" },
-    { name = "nodejs-wheel", specifier = ">=22" },
-    { name = "numpy", specifier = ">=1.26" },
 ]
 
 [[package]]

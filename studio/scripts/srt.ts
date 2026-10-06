@@ -1,4 +1,4 @@
-// qass srt — captions in OUTPUT time, from the same timeline the video renders with.
+// cut-and-caption srt — captions in OUTPUT time, from the same timeline the video renders with.
 //   tsx scripts/srt.ts <project> [--out file.srt]
 import fs from "node:fs";
 import path from "node:path";

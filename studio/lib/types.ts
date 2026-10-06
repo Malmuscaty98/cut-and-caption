@@ -1,4 +1,4 @@
-// project.json — see skills/qass/references/project-schema.md. All times are SOURCE seconds.
+// project.json — see skills/video/references/project-schema.md. All times are SOURCE seconds.
 
 export type WordFlag = "filler" | "retake" | "low_conf" | "edited" | "glossary" | "inserted";
 
@@ -129,7 +129,7 @@ export interface MediaUrls {
   muted?: boolean; // render: picture only — the engine adds the sound afterwards
 }
 
-export interface QassVideoProps {
+export interface CaptionedVideoProps {
   project: Project;
   style: CaptionStyle;
   media: MediaUrls;

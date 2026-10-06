@@ -7,7 +7,7 @@ export default function Home() {
   const projects = listProjects().filter((p) => !p.name.startsWith("_"));
   return (
     <main style={{ maxWidth: 720, margin: "60px auto", padding: 16 }}>
-      <h1 style={{ fontSize: 26, marginBottom: 4 }}>Qass · قَص</h1>
+      <h1 style={{ fontSize: 26, marginBottom: 4 }}>Cut & Caption · قص وكابشن</h1>
       <p className="muted" style={{ marginTop: 0 }}>
         مشروع جديد: قل لـ Claude «قص السكتات وأضف كابشن لـ …» مع مسار الفيديو. المشاريع محفوظة في <code dir="ltr">{PROJECTS}</code>
       </p>

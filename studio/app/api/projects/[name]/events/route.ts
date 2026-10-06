@@ -33,7 +33,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ name: string }>
         }
       };
       const send = (data: unknown) => push(`data: ${JSON.stringify(data)}\n\n`);
-      send({ type: "hello", build: process.env.NEXT_PUBLIC_QASS_BUILD });
+      send({ type: "hello", build: process.env.NEXT_PUBLIC_CUTCAPTION_BUILD });
       // Watch the folder: atomic writes replace the file, which breaks a file-level watch.
       watcher = fs.watch(dir, { recursive: true }, (_ev, f) => {
         const fn = String(f ?? "");

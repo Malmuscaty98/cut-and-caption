@@ -74,7 +74,7 @@ export function Editor({ name }: { name: string }) {
       const msg = JSON.parse(ev.data);
       // The server restarted with newer code than this tab is running → save, then reload.
       if (msg.type === "hello") {
-        const mine = process.env.NEXT_PUBLIC_QASS_BUILD;
+        const mine = process.env.NEXT_PUBLIC_CUTCAPTION_BUILD;
         if (msg.build && mine && msg.build !== mine) {
           useStore.getState().notify("تحديث جديد للمحرر — يعيد التحميل…");
           await save();

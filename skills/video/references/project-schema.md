@@ -1,8 +1,8 @@
 # project.json — schema & invariants (version 1)
 
 Contract shared by the engine, the editor and this skill. When one changes it, update this file
-and `scripts/qass_project.py validate` together. Projects live in `<Qass folder>/projects/<slug>/`
-(`~/Movies/Qass` on macOS, `~\Videos\Qass` on Windows, or `QASS_HOME`).
+and `scripts/project_tool.py validate` together. Projects live in `<Cut and Caption folder>/projects/<slug>/`
+(`~/Movies/Cut and Caption` on macOS, `~\Videos\Cut and Caption` on Windows, or `CUTCAPTION_HOME`).
 
 ## Shape
 
@@ -104,7 +104,7 @@ work like cuts. `x`/`y` = the zoom centre (0–1 of the frame); `mode`: `cut` (h
 median brightness (0–1) of a 10 × 20 grid, row-major. Read-only — re-run `Q shots <slug>` instead
 of editing it. Full type definitions: `studio/lib/types.ts`.
 
-## Invariants (enforced by `qass_project.py validate`)
+## Invariants (enforced by `project_tool.py validate`)
 
 Errors (must fix):
 - ids unique within each array; every `captions[].wordIds` entry exists.

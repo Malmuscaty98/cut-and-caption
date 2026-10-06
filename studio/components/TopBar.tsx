@@ -14,11 +14,11 @@ export function TopBar() {
   return (
     <div className="topbar">
       <Link href="/" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 700 }}>
-        قَص
+        قص وكابشن
       </Link>
       <strong>{name}</strong>
       <span className="muted" style={{ fontSize: 11, direction: "ltr" }} title="إصدار المحرر — لو ما يطابق آخر تحديث، أعد تحميل الصفحة">
-        v{(process.env.NEXT_PUBLIC_QASS_BUILD ?? "dev").split("-")[0]}
+        v{(process.env.NEXT_PUBLIC_CUTCAPTION_BUILD ?? "dev").split("-")[0]}
       </span>
       <span className="muted">{saving ? "…يحفظ" : dirty ? "تعديلات غير محفوظة" : "محفوظ ✓"}</span>
       <span className="grow" />

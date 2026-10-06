@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "_doc": "Your glossary: names, brands and phrases Whisper should spell your way. `text` is the spelling you want, `variants` are what Whisper tends to write instead (any language). Claude applies it in the review pass; the first ~40 terms also bias the transcription. Edit this file in your Qass folder (QASS_HOME/glossary.json).",
+  "_doc": "Your glossary: names, brands and phrases Whisper should spell your way. `text` is the spelling you want, `variants` are what Whisper tends to write instead (any language). Claude applies it in the review pass; the first ~40 terms also bias the transcription. Edit this file in your Cut and Caption folder (CUTCAPTION_HOME/glossary.json).",
   "terms": [
     { "text": "ChatGPT", "variants": ["شات جي بي تي", "تشات جي بي تي", "chat gpt"], "category": "tech" },
     { "text": "Claude", "variants": ["كلود", "كلاود", "claude"], "category": "tech" },

@@ -1,4 +1,4 @@
-// qass setup — download the headless browser Remotion renders with (once, ~100 MB).
+// cut-and-caption setup — download the headless browser Remotion renders with (once, ~100 MB).
 import { ensureBrowser } from "@remotion/renderer";
 
 ensureBrowser({ logLevel: "error" })

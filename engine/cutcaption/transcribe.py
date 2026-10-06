@@ -3,7 +3,7 @@
 - Apple Silicon Macs: mlx-whisper (Metal GPU) — large-v3 by default.
 - Intel Macs and Windows/Linux PCs: faster-whisper — an NVIDIA GPU is used when its CUDA
   libraries load, otherwise the CPU (int8); large-v3-turbo by default because large-v3 is slow on
-  a CPU. QASS_WHISPER=mlx|faster forces a backend.
+  a CPU. CUTCAPTION_WHISPER=mlx|faster forces a backend.
 """
 import json
 import os
@@ -25,7 +25,7 @@ PUNCT_ONLY = set(APPEND_PUNCT + "«»-–— ")
 
 
 def backend():
-    forced = os.environ.get("QASS_WHISPER")
+    forced = os.environ.get("CUTCAPTION_WHISPER")
     if forced in ("mlx", "faster"):
         return forced
     return "mlx" if APPLE_SILICON else "faster"

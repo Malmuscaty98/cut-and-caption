@@ -1,4 +1,4 @@
-# End-to-end smoke test on the three kinds of machines Qass supports: setup → analyze → zoom →
+# End-to-end smoke test on the three kinds of machines Cut & Caption supports: setup → analyze → zoom →
 # render → editor. Uses Whisper "tiny" and a public-domain speech sample to stay fast.
 name: smoke
 on:
@@ -24,40 +24,40 @@ jobs:
       run:
         shell: bash
     env:
-      QASS_DATA: ${{ github.workspace }}/.ci/data
-      QASS_HOME: ${{ github.workspace }}/.ci/home
-      QASS_WHISPER: ${{ matrix.whisper }}
+      CUTCAPTION_DATA: ${{ github.workspace }}/.ci/data
+      CUTCAPTION_HOME: ${{ github.workspace }}/.ci/home
+      CUTCAPTION_WHISPER: ${{ matrix.whisper }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - name: setup
-        run: bin/qass setup --model tiny --yes
+        run: bin/cut-and-caption setup --model tiny --yes
       - name: sample clip (JFK, public domain)
         run: |
           curl -sSL -o jfk.wav https://github.com/ggml-org/whisper.cpp/raw/master/samples/jfk.wav
-          bin/qass ffmpeg -v error -y -f lavfi -i "color=c=0x445566:s=1080x1920:r=30" -i jfk.wav -shortest \
+          bin/cut-and-caption ffmpeg -v error -y -f lavfi -i "color=c=0x445566:s=1080x1920:r=30" -i jfk.wav -shortest \
             -c:v libx264 -pix_fmt yuv420p -c:a aac sample.mp4
       - name: analyze
-        run: bin/qass analyze sample.mp4 --name ci --model tiny --language en
+        run: bin/cut-and-caption analyze sample.mp4 --name ci --model tiny --language en
       - name: zoom
-        run: bin/qass zoom ci --apply --no-emphasis
+        run: bin/cut-and-caption zoom ci --apply --no-emphasis
       - name: validate
-        run: bin/qass pj validate ci
+        run: bin/cut-and-caption pj validate ci
       - name: render
         run: |
-          bin/qass render ci --draft
-          test -s "$QASS_HOME/projects/ci/renders/ci-9x16-draft.mp4"
-          test -s "$QASS_HOME/projects/ci/renders/ci.srt"
+          bin/cut-and-caption render ci --draft
+          test -s "$CUTCAPTION_HOME/projects/ci/renders/ci-9x16-draft.mp4"
+          test -s "$CUTCAPTION_HOME/projects/ci/renders/ci.srt"
       - name: editor
         run: |
-          bin/qass studio ci --no-browser
+          bin/cut-and-caption studio ci --no-browser
           curl -sf http://127.0.0.1:4318/api/health
           curl -sf http://127.0.0.1:4318/edit/ci > /dev/null
-          bin/qass studio --stop
+          bin/cut-and-caption studio --stop
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: qass-${{ matrix.os }}
+          name: cut-and-caption-${{ matrix.os }}
           path: |
             .ci/home/projects/ci/renders/
             .ci/data/studio.log

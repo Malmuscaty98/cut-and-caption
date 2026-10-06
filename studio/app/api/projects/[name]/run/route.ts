@@ -4,8 +4,8 @@ import { engineCommand, projectDir, ROOT } from "@/lib/server-files";
 export const dynamic = "force-dynamic";
 
 type Job = { cmd: string; status: "running" | "done" | "error"; log: string[]; progress: number; out?: string; started: number };
-const g = globalThis as unknown as { __qassJobs?: Map<string, Job> };
-const jobs = (g.__qassJobs ??= new Map());
+const g = globalThis as unknown as { __ccJobs?: Map<string, Job> };
+const jobs = (g.__ccJobs ??= new Map());
 
 const COMMANDS: Record<string, (name: string, opts: Record<string, string | boolean>) => string[]> = {
   recut: (n, o) => [

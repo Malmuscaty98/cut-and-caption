@@ -1,10 +1,10 @@
 "use client";
 import { Player, type PlayerRef } from "@remotion/player";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { QassVideo } from "@/remotion/QassVideo";
+import { CaptionedVideo } from "@/remotion/CaptionedVideo";
 import { activeCaption } from "@/lib/timeline";
 import { fmtTime, useStore } from "@/lib/store";
-import type { QassVideoProps } from "@/lib/types";
+import type { CaptionedVideoProps } from "@/lib/types";
 import { useResolvedStyle, useTimeline } from "./hooks";
 
 // Imperative handle used by the keyboard shortcuts (J/K/L, Space).
@@ -64,7 +64,7 @@ export function PlayerPanel() {
 
   useEffect(() => {
     ref = playerRef.current;
-    if (process.env.NODE_ENV !== "production") (window as unknown as { __qassPlayer?: PlayerRef | null }).__qassPlayer = playerRef.current; // dev-only debugging handle
+    if (process.env.NODE_ENV !== "production") (window as unknown as { __player?: PlayerRef | null }).__player = playerRef.current; // dev-only debugging handle
     const p = playerRef.current;
     if (!p) return;
     const onFrame = (e: { detail: { frame: number } }) => useStore.setState({ frame: e.detail.frame });
@@ -87,7 +87,7 @@ export function PlayerPanel() {
   }, [seekTo, tl.durationInFrames]);
 
   const base = `/api/media/${encodeURIComponent(name)}/`;
-  const inputProps = useMemo<QassVideoProps>(
+  const inputProps = useMemo<CaptionedVideoProps>(
     () => ({ project, style, view, guides, media: { video: base + project.source.proxy } }),
     [project, style, view, guides, base],
   );
@@ -133,7 +133,7 @@ export function PlayerPanel() {
         <div dir="ltr" style={{ position: "relative", width: size.w, height: size.h, boxShadow: "0 0 0 1px #2b2e33" }}>
           <Player
             ref={playerRef}
-            component={QassVideo}
+            component={CaptionedVideo}
             inputProps={inputProps}
             durationInFrames={tl.durationInFrames}
             fps={tl.fps}

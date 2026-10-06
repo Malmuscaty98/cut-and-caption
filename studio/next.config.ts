@@ -10,7 +10,7 @@ const config: NextConfig = {
   // Remotion's renderer/bundler are Node-only; keep them out of the client & server bundles.
   serverExternalPackages: ["@remotion/renderer", "@remotion/bundler"],
   devIndicators: false,
-  env: { NEXT_PUBLIC_QASS_BUILD: BUILD },
+  env: { NEXT_PUBLIC_CUTCAPTION_BUILD: BUILD },
 };
 
 export default config;

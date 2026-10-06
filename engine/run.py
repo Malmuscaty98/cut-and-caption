@@ -5,6 +5,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from qass.cli import main  # noqa: E402
+from cutcaption.cli import main  # noqa: E402
 
 main()

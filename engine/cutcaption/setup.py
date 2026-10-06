@@ -1,4 +1,4 @@
-"""`qass setup` — get everything ready (idempotent); `qass doctor` — only report.
+"""`cut-and-caption setup` — get everything ready (idempotent); `cut-and-caption doctor` — only report.
 
 Nothing is installed system-wide. Python packages come from uv (already in place when this runs),
 ffmpeg from the imageio-ffmpeg wheel, Node.js from the nodejs-wheel package. The editor is copied
@@ -18,7 +18,7 @@ from .paths import DATA, DEV, GLOSSARY, HOME, PROJECTS, ROOT, STUDIO, STUDIO_SRC
 from .transcribe import MLX_MODELS, MODEL_SIZE_GB, backend, default_model
 
 NEEDS_CONSENT = 3  # exit code: the model must be downloaded — ask the user first
-IGNORE = {"node_modules", ".next", ".remotion-bundle", "tsconfig.tsbuildinfo", "next-env.d.ts", ".qass-stamp"}
+IGNORE = {"node_modules", ".next", ".remotion-bundle", "tsconfig.tsbuildinfo", "next-env.d.ts", ".cc-stamp"}
 _NO_WINDOW = {"creationflags": 0x08000000} if sys.platform == "win32" else {}
 
 
@@ -77,7 +77,7 @@ def editor_ready():
         return False
     if DEV:
         return True
-    stamp = d / ".qass-stamp"
+    stamp = d / ".cc-stamp"
     return (d / ".next" / "BUILD_ID").exists() and stamp.exists() and stamp.read_text() == editor_stamp()
 
 
@@ -101,7 +101,7 @@ def install_editor(log):
     if not DEV:
         log("• building the editor (~1 min)…")
         _node([d / "node_modules" / "next" / "dist" / "bin" / "next", "build"], d, log, "next build")
-        (d / ".qass-stamp").write_text(editor_stamp())
+        (d / ".cc-stamp").write_text(editor_stamp())
     log("  ✓ editor ready")
 
 
@@ -132,13 +132,13 @@ def doctor(model=None, log=print):
     for name, ok, info in rows:
         log(f"{'✓' if ok else '✗'} {name:9} {info}")
     ok = all(ok for _, ok, _ in rows)
-    log("ready" if ok else "not ready — run: qass setup")
+    log("ready" if ok else "not ready — run: cut-and-caption setup")
     return 0 if ok else 1
 
 
 def setup(model=None, yes=False, log=print):
     model = model or default_model()
-    log(f"Qass {__version__} setup — data: {DATA} · projects: {HOME}")
+    log(f"Cut & Caption {__version__} setup — data: {DATA} · projects: {HOME}")
     PROJECTS.mkdir(parents=True, exist_ok=True)
     (HOME / "presets").mkdir(parents=True, exist_ok=True)
     if not GLOSSARY.exists():
@@ -152,7 +152,7 @@ def setup(model=None, yes=False, log=print):
         if not yes:
             log(json.dumps({"needs_consent": True, "model": model, "size_gb": MODEL_SIZE_GB.get(model)}))
             log(f"! the speech model Whisper {model} (~{MODEL_SIZE_GB.get(model, '?')} GB) must be downloaded once — "
-                f"ask the user, then run: qass setup --yes")
+                f"ask the user, then run: cut-and-caption setup --yes")
             return NEEDS_CONSENT
         download_model(model, log)
     return doctor(model, log)

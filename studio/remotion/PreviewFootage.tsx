@@ -44,7 +44,7 @@ export const PreviewFootage: React.FC<{
     if (c.height !== v.videoHeight) c.height = v.videoHeight;
     ctx.drawImage(v, 0, 0, c.width, c.height);
     drawn.current = true;
-    if (process.env.NODE_ENV !== "production") (c as HTMLCanvasElement & { qassT?: number }).qassT = t; // for playback probes
+    if (process.env.NODE_ENV !== "production") (c as HTMLCanvasElement & { ccT?: number }).ccT = t; // for playback probes
   }, []);
 
   useEffect(() => {

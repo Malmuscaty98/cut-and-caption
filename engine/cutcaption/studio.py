@@ -1,7 +1,7 @@
-"""`qass studio [project]` — start the editor if it isn't running, open it in the browser.
+"""`cut-and-caption studio [project]` — start the editor if it isn't running, open it in the browser.
 
 The editor is a local web app bound to 127.0.0.1 only (never reachable from the network).
-It keeps running after the command returns; `qass studio --stop` stops it.
+It keeps running after the command returns; `cut-and-caption studio --stop` stops it.
 """
 import json
 import os
@@ -24,7 +24,7 @@ LOG = DATA / "studio.log"
 def alive():
     try:
         with urllib.request.urlopen(URL + "/api/health", timeout=1.5) as r:
-            return json.loads(r.read()).get("app") == "qass"
+            return json.loads(r.read()).get("app") == "cut-and-caption"
     except Exception:
         return False
 
@@ -35,9 +35,9 @@ def start(log=print):
     studio = studio_dir()
     nxt = studio / "node_modules" / "next" / "dist" / "bin" / "next"
     if not nxt.exists():
-        raise MediaError("the editor isn't installed yet — run: qass setup")
+        raise MediaError("the editor isn't installed yet — run: cut-and-caption setup")
     if not DEV and not (studio / ".next" / "BUILD_ID").exists():
-        raise MediaError("the editor isn't built yet — run: qass setup")
+        raise MediaError("the editor isn't built yet — run: cut-and-caption setup")
     DATA.mkdir(parents=True, exist_ok=True)
     cmd = [str(node_exe()), str(nxt), "dev" if DEV else "start", "-H", "127.0.0.1", "-p", str(PORT)]
     kw = ({"creationflags": 0x00000008 | 0x00000200}  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP

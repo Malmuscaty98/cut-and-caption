@@ -1,4 +1,4 @@
-# local development data (QASS_DATA / QASS_HOME pointed here while developing)
+# local development data (CUTCAPTION_DATA / CUTCAPTION_HOME pointed here while developing)
 .dev/
 # tooling
 node_modules/

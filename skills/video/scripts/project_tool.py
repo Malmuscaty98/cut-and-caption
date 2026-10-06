@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Inspect, validate, diff and snapshot Qass Studio project.json files.
+"""Inspect, validate, diff and snapshot Cut & Caption project.json files.
 
-Stdlib only, Python >= 3.9. Used by the `qass` Claude Code skill; see ../SKILL.md.
+Stdlib only, Python >= 3.9. Used by the Cut & Caption Claude Code skill; see ../SKILL.md.
 """
 import argparse
 import json
@@ -13,8 +13,8 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-# Projects live in the user's Qass folder (same rule as engine/qass/paths.py).
-HOME = Path(os.environ.get("QASS_HOME") or Path.home() / ("Movies" if sys.platform == "darwin" else "Videos") / "Qass")
+# Projects live in the user's Cut and Caption folder (same rule as engine/cutcaption/paths.py).
+HOME = Path(os.environ.get("CUTCAPTION_HOME") or Path.home() / ("Movies" if sys.platform == "darwin" else "Videos") / "Cut and Caption")
 PRESET_DIRS = [Path(__file__).resolve().parents[3] / "studio" / "presets", HOME / "presets"]
 HISTORY_KEEP = 50
 LOW_CONF = 0.6
@@ -486,7 +486,7 @@ def cmd_save(a):
 # ---------------------------------------------------------------- cli
 
 def main():
-    ap = argparse.ArgumentParser(prog="qass_project", description=__doc__)
+    ap = argparse.ArgumentParser(prog="project_tool", description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p = sub.add_parser("summary"); p.add_argument("project"); p.set_defaults(fn=cmd_summary)

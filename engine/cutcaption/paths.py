@@ -2,9 +2,9 @@
 
 ROOT      the plugin folder (read-only once installed as a Claude Code plugin)
 DATA      runtime files: the Python env, the editor build, logs
-          (QASS_DATA, else CLAUDE_PLUGIN_DATA, else ~/.qass)
+          (CUTCAPTION_DATA, else CLAUDE_PLUGIN_DATA, else ~/.cut-and-caption)
 HOME      the user's own things: projects, saved presets, glossary
-          (QASS_HOME, else ~/Movies/Qass on macOS, ~/Videos/Qass elsewhere)
+          (CUTCAPTION_HOME, else ~/Movies/Cut and Caption on macOS, ~/Videos/Cut and Caption elsewhere)
 """
 import os
 import sys
@@ -21,8 +21,8 @@ def _env_path(*names):
     return None
 
 
-DATA = _env_path("QASS_DATA", "CLAUDE_PLUGIN_DATA") or Path.home() / ".qass"
-HOME = _env_path("QASS_HOME") or Path.home() / ("Movies" if sys.platform == "darwin" else "Videos") / "Qass"
+DATA = _env_path("CUTCAPTION_DATA", "CLAUDE_PLUGIN_DATA") or Path.home() / ".cut-and-caption"
+HOME = _env_path("CUTCAPTION_HOME") or Path.home() / ("Movies" if sys.platform == "darwin" else "Videos") / "Cut and Caption"
 
 PROJECTS = HOME / "projects"
 USER_PRESETS = HOME / "presets"
@@ -30,8 +30,8 @@ GLOSSARY = HOME / "glossary.json"
 BUILTIN_PRESETS = ROOT / "presets"
 STUDIO_SRC = ROOT / "studio"
 STUDIO = DATA / "studio"  # writable copy: node_modules + production build
-PORT = int(os.environ.get("QASS_PORT", "4318"))
-DEV = os.environ.get("QASS_DEV") == "1"  # run the editor from ROOT/studio with `next dev`
+PORT = int(os.environ.get("CUTCAPTION_PORT", "4318"))
+DEV = os.environ.get("CUTCAPTION_DEV") == "1"  # run the editor from ROOT/studio with `next dev`
 
 
 def studio_dir() -> Path:
@@ -39,9 +39,9 @@ def studio_dir() -> Path:
 
 
 def node_home() -> Path:
-    """Folder of the real Node.js binary shipped in the nodejs-wheel package (QASS_NODE_DIR
+    """Folder of the real Node.js binary shipped in the nodejs-wheel package (CUTCAPTION_NODE_DIR
     overrides it, e.g. to use a system Node)."""
-    env = _env_path("QASS_NODE_DIR")
+    env = _env_path("CUTCAPTION_NODE_DIR")
     if env:
         return env
     import nodejs_wheel
@@ -72,6 +72,6 @@ def tool_env() -> dict:
     editor spawn `node` by name), and where the user's things live."""
     env = dict(os.environ)
     env["PATH"] = os.pathsep.join([str(node_home()), str(Path(sys.executable).parent), env.get("PATH", "")])
-    env.update({"QASS_HOME": str(HOME), "QASS_DATA": str(DATA), "QASS_ROOT": str(ROOT), "QASS_PY": sys.executable,
-                "QASS_PORT": str(PORT), "REMOTION_DISABLE_TELEMETRY": "1", "NEXT_TELEMETRY_DISABLED": "1"})
+    env.update({"CUTCAPTION_HOME": str(HOME), "CUTCAPTION_DATA": str(DATA), "CUTCAPTION_ROOT": str(ROOT), "CUTCAPTION_PY": sys.executable,
+                "CUTCAPTION_PORT": str(PORT), "REMOTION_DISABLE_TELEMETRY": "1", "NEXT_TELEMETRY_DISABLED": "1"})
     return env

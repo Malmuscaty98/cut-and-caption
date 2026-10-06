@@ -1,4 +1,4 @@
-"""`qass` command line. Messages are plain English; Claude relays them in the user's language."""
+"""`cut-and-caption` command line. Messages are plain English; Claude relays them in the user's language."""
 import argparse
 import json
 import sys
@@ -102,11 +102,11 @@ def cmd_projects(a):
 
 
 def run_helper(args):
-    """`qass pj …` — the skill's project helper (skills/qass/scripts/qass_project.py) run with this
+    """`cut-and-caption pj …` — the skill's project helper (skills/video/scripts/project_tool.py) run with this
     environment's Python, so it works the same where `python3` isn't on PATH (Windows)."""
     import runpy
     from .paths import ROOT
-    script = ROOT / "skills" / "qass" / "scripts" / "qass_project.py"
+    script = ROOT / "skills" / "video" / "scripts" / "project_tool.py"
     sys.argv = [str(script), *args]
     runpy.run_path(str(script), run_name="__main__")
 
@@ -119,8 +119,8 @@ def main(argv=None):
         import subprocess
         from .media import ffmpeg
         sys.exit(subprocess.call([ffmpeg(), *argv[1:]]))
-    ap = argparse.ArgumentParser(prog="qass", description="Qass — silence cuts, precise captions and zooms")
-    ap.add_argument("--version", action="version", version=f"qass {__version__}")
+    ap = argparse.ArgumentParser(prog="cut-and-caption", description="Cut & Caption — silence cuts, precise captions and zooms")
+    ap.add_argument("--version", action="version", version=f"cut-and-caption {__version__}")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def add(name, fn, help_, project=False):

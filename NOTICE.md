@@ -1,6 +1,6 @@
 # Third-party software
 
-Qass's own code is MIT-licensed. It doesn't ship these projects — `qass setup` installs them on
+Cut & Caption's own code is MIT-licensed. It doesn't ship these projects — `cut-and-caption setup` installs them on
 your machine from their usual registries (PyPI, npm, Hugging Face), each under its own license:
 
 | Component | Used for | License |

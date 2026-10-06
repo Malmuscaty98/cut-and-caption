@@ -1,11 +1,11 @@
 {
-  "name": "qass",
-  "owner": { "name": "Qass" },
+  "name": "malmuscaty",
+  "owner": { "name": "Mohammed Almuscaty (محمد المسقطي)" },
   "plugins": [
     {
-      "name": "qass",
+      "name": "cut-and-caption",
       "source": "./",
-      "description": "Silence cuts, precise captions and zooms for talking-head videos, with a local editor."
+      "description": "Cut & Caption · قص وكابشن — silence cuts, precise captions and zooms for talking-head videos, with a local editor."
     }
   ]
 }

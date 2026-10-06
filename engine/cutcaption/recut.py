@@ -1,6 +1,6 @@
-"""`qass recut` — recompute the silence cuts with new settings (the editor's Cuts tab).
+"""`cut-and-caption recut` — recompute the silence cuts with new settings (the editor's Cuts tab).
 
-Same rule as `qass analyze` (verified by re-transcribing renders): only acoustic silence is cut,
+Same rule as `cut-and-caption analyze` (verified by re-transcribing renders): only acoustic silence is cut,
 padded on both sides, and any word Whisper heard inside a "silence" (said quietly) is carved out
 of it. The stored words are not modified. Manual, filler and retake cuts are kept as they are.
 """

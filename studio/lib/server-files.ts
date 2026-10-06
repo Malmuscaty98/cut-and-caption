@@ -1,15 +1,15 @@
 // Node-only helpers shared by the Next API routes and the render scripts.
-// Where things live (same rules as engine/qass/paths.py):
-//   HOME  = QASS_HOME, else ~/Movies/Qass (macOS) or ~/Videos/Qass — the user's projects and presets
-//   ROOT  = QASS_ROOT (the plugin folder; the engine is ROOT/engine), else the repo next to this studio
+// Where things live (same rules as engine/cutcaption/paths.py):
+//   HOME  = CUTCAPTION_HOME, else ~/Movies/Cut and Caption (macOS) or ~/Videos/Cut and Caption — the user's projects and presets
+//   ROOT  = CUTCAPTION_ROOT (the plugin folder; the engine is ROOT/engine), else the repo next to this studio
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { Preset, Project } from "./types";
 
 export const STUDIO_DIR = path.resolve(process.cwd());
-export const ROOT = path.resolve(process.env.QASS_ROOT || path.join(STUDIO_DIR, ".."));
-export const HOME = path.resolve(process.env.QASS_HOME || path.join(os.homedir(), process.platform === "darwin" ? "Movies" : "Videos", "Qass"));
+export const ROOT = path.resolve(process.env.CUTCAPTION_ROOT || path.join(STUDIO_DIR, ".."));
+export const HOME = path.resolve(process.env.CUTCAPTION_HOME || path.join(os.homedir(), process.platform === "darwin" ? "Movies" : "Videos", "Cut and Caption"));
 export const PROJECTS = path.join(HOME, "projects");
 export const USER_PRESETS = path.join(HOME, "presets");
 export const BUILTIN_PRESETS = path.join(STUDIO_DIR, "presets");
@@ -85,12 +85,12 @@ export function safeJoin(dir: string, rel: string) {
   return p;
 }
 
-/** The engine command for a job: the env's Python + engine/run.py (set by `qass studio`),
- *  or bin/qass when the editor was started by hand while developing. */
+/** The engine command for a job: the env's Python + engine/run.py (set by `cut-and-caption studio`),
+ *  or bin/cut-and-caption when the editor was started by hand while developing. */
 export function engineCommand(args: string[]): [string, string[]] {
-  const py = process.env.QASS_PY;
+  const py = process.env.CUTCAPTION_PY;
   if (py) return [py, [path.join(ROOT, "engine", "run.py"), ...args]];
-  return [path.join(ROOT, "bin", process.platform === "win32" ? "qass.cmd" : "qass"), args];
+  return [path.join(ROOT, "bin", process.platform === "win32" ? "cut-and-caption.cmd" : "cut-and-caption"), args];
 }
 
 export const MIME: Record<string, string> = {

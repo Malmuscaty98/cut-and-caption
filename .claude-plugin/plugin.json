@@ -1,7 +1,8 @@
 {
-  "name": "qass",
+  "name": "cut-and-caption",
   "version": "0.1.0",
-  "description": "Cut silences, add precise word-level captions (any language — Arabic rendered right) and punch-in zooms on talking-head videos, fine-tune everything in a local editor, export for Reels / TikTok / Shorts. Runs entirely on your computer (macOS and Windows).",
+  "description": "Cut & Caption · قص وكابشن — cut silences, add precise word-level captions (any language, Arabic rendered right) and punch-in zooms on talking-head videos, fine-tune everything in a local editor, export for Reels / TikTok / Shorts. Runs entirely on your computer (macOS and Windows).",
+  "author": { "name": "Mohammed Almuscaty (محمد المسقطي)" },
   "license": "MIT",
   "keywords": ["video", "captions", "subtitles", "silence-removal", "jump-cut", "zoom", "reels", "tiktok", "shorts", "arabic", "whisper", "remotion"]
 }

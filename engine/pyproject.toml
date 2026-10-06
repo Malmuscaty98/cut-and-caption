@@ -1,7 +1,7 @@
 [project]
-name = "qass-engine"
+name = "cut-and-caption-engine"
 version = "0.1.0"
-description = "Qass engine: silence cuts, word-level captions, zooms (media processing, no UI)"
+description = "Cut & Caption engine: silence cuts, word-level captions, zooms (media processing, no UI)"
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "numpy>=1.26",

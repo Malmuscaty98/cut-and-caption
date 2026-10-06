@@ -1,17 +1,17 @@
 ---
-name: qass
+name: video
 description: >-
-  Qass — cut silences, add precise word-level captions and punch-in zooms on talking-head
+  Cut & Caption — cut silences, add precise word-level captions and punch-in zooms on talking-head
   videos (Reels, TikTok, Shorts, YouTube), fine-tune everything in a local editor, then export.
   Any language Whisper knows; Arabic in every dialect is rendered correctly. Use this whenever
   the user gives a video file or a folder of clips and wants silences / pauses / dead air
   removed, captions / subtitles / كابشن / ترجمة added, zooms / punch-ins added, or the result
   exported — e.g. "caption this", "cut the silences", "add zooms", "make it ready for TikTok",
-  «قص السكتات»، «أضف كابشن»، «حط زوم»، «صدّر الفيديو» — and for any follow-up edit to a Qass
+  «قص السكتات»، «أضف كابشن»، «حط زوم»، «صدّر الفيديو» — and for any follow-up edit to a Cut & Caption
   project (caption text, style, cuts, zooms). Everything runs on the user's computer.
 ---
 
-# Qass — silence cuts, precise captions, zooms
+# Cut & Caption — silence cuts, precise captions, zooms
 
 | # | Feature | Where it's controlled |
 |---|---|---|
@@ -36,19 +36,19 @@ description: >-
 Every command goes through the plugin's launcher, with the plugin's data folder:
 
 ```bash
-QASS_DATA="${CLAUDE_PLUGIN_DATA}" "${CLAUDE_PLUGIN_ROOT}/bin/qass" doctor
+CUTCAPTION_DATA="${CLAUDE_PLUGIN_DATA}" "${CLAUDE_PLUGIN_ROOT}/bin/cut-and-caption" doctor
 ```
 
-Below, `Q` means exactly that prefix (`QASS_DATA="${CLAUDE_PLUGIN_DATA}" "${CLAUDE_PLUGIN_ROOT}/bin/qass"`)
+Below, `Q` means exactly that prefix (`CUTCAPTION_DATA="${CLAUDE_PLUGIN_DATA}" "${CLAUDE_PLUGIN_ROOT}/bin/cut-and-caption"`)
 and `PJ` means `Q pj`. Quote paths — they often contain spaces or Arabic.
 
 - `Q doctor` → all ✓: go on. Otherwise run `Q setup` (2–5 min the first time: installs the editor).
-- Exit **127** = `uv` isn't installed. Tell the user it's the one tool Qass needs, show the one-liner
+- Exit **127** = `uv` isn't installed. Tell the user it's the one tool Cut & Caption needs, show the one-liner
   the launcher printed for their OS, and run it only after they agree.
 - Exit **3** from setup = the speech model must be downloaded once: **large-v3** (~3.1 GB) on
   Apple-Silicon Macs, **large-v3-turbo** (~1.6 GB) on Intel Macs and Windows. Say the size, ask,
   then `Q setup --yes`. (A slow PC can use `--model medium` / `small`: faster, less accurate.)
-- Projects are saved in `~/Movies/Qass/projects` (macOS) or `~\Videos\Qass\projects` (Windows).
+- Projects are saved in `~/Movies/Cut and Caption/projects` (macOS) or `~\Videos\Cut and Caption\projects` (Windows).
 
 ## Step 1 — analyze
 

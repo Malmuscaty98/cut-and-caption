@@ -1,4 +1,4 @@
-"""`qass zoom` — punch-in zooms, the third feature.
+"""`cut-and-caption zoom` — punch-in zooms, the third feature.
 
 - cut zooms: every other kept piece is punched in (hard cut wide ↔ tight), the classic
   jump-cut rhythm of short-form video. Pieces shorter than MIN_PIECE stay wide.

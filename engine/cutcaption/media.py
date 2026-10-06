@@ -1,7 +1,7 @@
 """ffmpeg and media probing, identical on macOS, Windows and Linux.
 
 ffmpeg comes from the imageio-ffmpeg wheel (a complete static build — no separate install, same
-version everywhere); QASS_FFMPEG overrides it. Probing uses PyAV (FFmpeg's libraries as a wheel),
+version everywhere); CUTCAPTION_FFMPEG overrides it. Probing uses PyAV (FFmpeg's libraries as a wheel),
 so no ffprobe is needed.
 """
 import os
@@ -21,7 +21,7 @@ class MediaError(RuntimeError):
 
 @lru_cache(None)
 def ffmpeg() -> str:
-    exe = os.environ.get("QASS_FFMPEG")
+    exe = os.environ.get("CUTCAPTION_FFMPEG")
     if exe:
         return exe
     try:

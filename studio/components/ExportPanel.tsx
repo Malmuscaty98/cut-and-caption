@@ -22,9 +22,9 @@ export function useJob(name: string) {
       if (!t) t = setInterval(tick, 800);
       void tick();
     };
-    window.addEventListener("qass-job", onStart);
+    window.addEventListener("cc-job", onStart);
     return () => {
-      window.removeEventListener("qass-job", onStart);
+      window.removeEventListener("cc-job", onStart);
       if (t) clearInterval(t);
     };
   }, [name]);
@@ -33,7 +33,7 @@ export function useJob(name: string) {
 
 export async function runJob(name: string, cmd: string, opts: Record<string, string | boolean> = {}) {
   const r = await fetch(`/api/projects/${encodeURIComponent(name)}/run`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cmd, opts }) });
-  window.dispatchEvent(new Event("qass-job"));
+  window.dispatchEvent(new Event("cc-job"));
   if (r.status === 409) useStore.getState().notify("فيه عملية شغّالة — انتظرها تخلص");
 }
 
