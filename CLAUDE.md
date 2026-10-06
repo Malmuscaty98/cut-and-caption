@@ -36,3 +36,11 @@ export CUTCAPTION_DEV=1 CUTCAPTION_DATA="$PWD/.dev/data" CUTCAPTION_HOME="$PWD/.
 bin/cut-and-caption setup            # venv + studio/node_modules in the repo, render browser
 bin/cut-and-caption analyze <video> --name test && bin/cut-and-caption zoom test --apply && bin/cut-and-caption studio test
 ```
+
+## Release
+
+Users install from `https://malmuscaty-site.vercel.app/plugins/marketplace.json` (the website repo,
+`web/public/plugins/marketplace.json`, points at `Malmuscaty98/cut-and-caption` on GitHub) or from the
+GitHub repo's own `.claude-plugin/marketplace.json`. Claude Code updates installed copies when the
+`version` in `.claude-plugin/plugin.json` changes: bump it (and `engine/cutcaption/__init__.py`,
+`studio/package.json`) for every release, push, and let CI pass on all three OSes first.

@@ -29,12 +29,14 @@
 
 ## التثبيت
 
-داخل Claude Code:
+داخل Claude Code (الصفحة: [malmuscaty-site.vercel.app/cut-and-caption](https://malmuscaty-site.vercel.app/cut-and-caption)):
 
 ```
-/plugin marketplace add <github-user>/cut-and-caption
+/plugin marketplace add https://malmuscaty-site.vercel.app/plugins/marketplace.json
 /plugin install cut-and-caption@malmuscaty
 ```
+
+أو مباشرة من GitHub: `/plugin marketplace add Malmuscaty98/cut-and-caption` ثم نفس أمر التثبيت.
 
 وبعدها قول لـ Claude مثلاً: «قص السكتات وأضف كابشن لهذا الفيديو: ~/Desktop/video.mp4».
 أول مرة يجهّز كل شي (٢–٥ دقائق) ويستأذنك قبل تحميل نموذج التفريغ:
@@ -75,10 +77,11 @@ Claude Code · macOS 13+ (Apple Silicon or Intel) or Windows 10/11 x64 · ~5 GB 
 (Cut & Caption offers the one-line install if it's missing).
 
 ```
-/plugin marketplace add <github-user>/cut-and-caption
+/plugin marketplace add https://malmuscaty-site.vercel.app/plugins/marketplace.json
 /plugin install cut-and-caption@malmuscaty
 ```
 
+(or straight from GitHub: `/plugin marketplace add Malmuscaty98/cut-and-caption`, then the same install command).
 Then ask Claude, e.g. "cut the silences and caption ~/Desktop/video.mp4". The first run installs
 the editor (2–5 min) and asks before downloading the speech model (large-v3 ~3.1 GB on Apple
 Silicon; large-v3-turbo ~1.6 GB elsewhere).
