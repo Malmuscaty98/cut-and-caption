@@ -11,7 +11,16 @@ dependencies = [
     "huggingface_hub>=0.24",
     "mlx-whisper>=0.4; sys_platform == 'darwin' and platform_machine == 'arm64'",
     "faster-whisper>=1.1; sys_platform != 'darwin' or platform_machine != 'arm64'",
+    # onnxruntime (faster-whisper's VAD) stopped shipping Intel-Mac wheels after 1.23
+    "onnxruntime<1.24; sys_platform == 'darwin' and platform_machine == 'x86_64'",
 ]
 
 [tool.uv]
 package = false   # dependencies only; run.py imports the engine from source
+# every supported machine must get prebuilt wheels — fail at lock time, not on a user's computer
+required-environments = [
+    "sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "sys_platform == 'win32' and platform_machine == 'AMD64'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
