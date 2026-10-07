@@ -27,4 +27,8 @@ fi
 export CUTCAPTION_DATA="$data"
 export UV_PROJECT_ENVIRONMENT="${data}${sep}venv"
 export PYTHONUTF8=1 PYTHONIOENCODING=utf-8
-exec uv run --quiet --project "${root}${sep}engine" --frozen python "${root}${sep}engine${sep}run.py" "$@"
+extra=()   # Apple Silicon ships mlx-whisper only; CUTCAPTION_WHISPER=faster pulls faster-whisper in too
+if [ "${CUTCAPTION_WHISPER:-}" = faster ] && [ "$(uname -s)" = Darwin ] && [ "$(uname -m)" = arm64 ]; then
+  extra=(--with "faster-whisper>=1.1")
+fi
+exec uv run --quiet --project "${root}${sep}engine" --frozen ${extra[@]+"${extra[@]}"} python "${root}${sep}engine${sep}run.py" "$@"

@@ -29,10 +29,10 @@
 
 ## التثبيت
 
-داخل Claude Code (الصفحة: [malmuscaty-site.vercel.app/cut-and-caption](https://malmuscaty-site.vercel.app/cut-and-caption)):
+داخل Claude Code (الصفحة: [malmuscaty.com/cut-and-caption](https://malmuscaty.com/cut-and-caption)):
 
 ```
-/plugin marketplace add https://malmuscaty-site.vercel.app/plugins/marketplace.json
+/plugin marketplace add https://malmuscaty.com/plugins/marketplace.json
 /plugin install cut-and-caption@malmuscaty
 ```
 
@@ -77,7 +77,7 @@ Claude Code · macOS 13+ (Apple Silicon or Intel) or Windows 10/11 x64 · ~5 GB 
 (Cut & Caption offers the one-line install if it's missing).
 
 ```
-/plugin marketplace add https://malmuscaty-site.vercel.app/plugins/marketplace.json
+/plugin marketplace add https://malmuscaty.com/plugins/marketplace.json
 /plugin install cut-and-caption@malmuscaty
 ```
 

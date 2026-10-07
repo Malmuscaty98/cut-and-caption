@@ -33,6 +33,8 @@ def dict_keys():
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # Windows consoles default to cp1252, which has no ✓/✗
+        stream.reconfigure(encoding="utf-8")
     ar, en = dict_keys()
     problems = []
     for k in sorted(ar - en):

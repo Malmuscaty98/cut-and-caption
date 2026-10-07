@@ -14,7 +14,7 @@ jobs:
         include:
           - os: macos-14        # Apple Silicon (no Metal in CI VMs → faster-whisper here)
             whisper: faster
-          - os: macos-13        # Intel Mac
+          - os: macos-15-intel  # Intel Mac (the macos-13 image is retired)
             whisper: ""
           - os: windows-latest  # Windows x64 (Git Bash, like Claude Code)
             whisper: ""
